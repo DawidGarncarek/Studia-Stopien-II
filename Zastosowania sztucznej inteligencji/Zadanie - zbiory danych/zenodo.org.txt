@@ -1,0 +1,11 @@
+1) 6961511
+2) Ten zestaw danych zawiera zestaw szeregów czasowych zmiennych meteorologicznych opartych na ponownej analizie ERA5 Copernicus Climate Change Service (C3S)
+3) Autorzy: Pan De Felice, K. Kavvadias 
+Licencja: Creative Commons Attribution 4.0 International
+4) .csv .nc .zip
+5) Posiada kilkanaście plików .csv o łącznej wadze ponad 5GB
+6) Pliki można pobierać pojedynczo lub zbiorczo natomiast notatki znajdują się w powiązanym repozytorium Github
+7) Na przykład w celu dostarczenia godzinnych szeregów czasowych zmiennych meteorologicznych powszechnie wykorzystywanych w modelowaniu systemów energetycznych i, szerzej, w badaniach systemów energetycznych.
+8) Na przykład otwarte repozytorium badań Unii Europejskiej lub narzędzia mapowania
+9) Analysis Of Monthly And Daily Annual Extreme Precipitation For Vadodara to dane, które przedstawiają analize miesięcznych i dziennych ekstremalnych opadów w Vadodara.
+10) https://explore.openaire.eu/search/dataset?pid=10.5281%2Fzenodo.6961511
