@@ -1,0 +1,10 @@
+1) Europarl-ST
+2) Zbiór danych dotyczących sposobu mówienia i interpretacji gestów w wielu językach
+3) Autor: Iranzo-Sánchez Licencja: https://www.mllp.upv.es/europarl-st/README.md
+4) .py .pdf oraz linki do github
+5) Do repozytorium jest przypisane ponad 55 stron linków do innych repozytrium zawierającycyh dane takie jak tekst czy audio np. języków europejskich.
+6) Poprzez przejscie linku GitHub 
+7) Na przykład do nauki gestów w innych językach, by móc się w nich odnajdywać za granicą.
+8) Przejście do podobnych zestawów danych, które również stworzone są w tematce mowy człowieka.
+9) CoVoST2 (Common Voice Speech-To-Text 2) czyli tłumaczenie mowy na tekst.
+10)https://github.com/DeutscheKI/tevr-asr-tool

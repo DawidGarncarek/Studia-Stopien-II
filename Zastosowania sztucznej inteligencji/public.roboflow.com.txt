@@ -1,0 +1,10 @@
+1) BCCD Dataset
+2) To zbiór danych zawierający zdjęcia komórek krwi, pierwotnie udostępniony jako oprogramowanie typu open source przez cosmicad i akshaylambda, podzielonych na trzy klasy: WBC(krwinki białe), RBC(krwinki czerwone) i Platelets. 
+3) Udostępniony przez Roboflow na licencji MIT
+4) Obrazy i etykiety .jpg, .png
+5) 364 obrazów i 4888 etykiet. Obrazy są w rozdzielczości 500x500
+6) Autorzy udostępniają dane jako domenę publiczną i można je po prostu pobrać z repozytorium
+7) Do analizy krwi i w na przykład wynalezieniu jakiś zależności, które pomogą w walce z jakimiś chorobami krwi.
+8) Informacje o Roboflow, czyli miejscu gdzie znajdują sie repozytoria.
+9) Na przykład jeśli chodzi o aspekty ludzkie no to znalazłem repozytorium Mask Wearing Dataset, które poleg ana wykrywaniu osób noszących maski, co można połączyć z chorobami.
+10) Na przykład stąd https://universe.roboflow.com/

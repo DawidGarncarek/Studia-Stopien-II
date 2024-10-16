@@ -1,0 +1,10 @@
+1) Company Bankruptcy Prediction
+2) Zbiór danych, który zawiera dane z Taiwan Economic Journal za lata 1999–2009. Upadłość przedsiębiorstwa zdefiniowano w oparciu o przepisy biznesowe Tajwańskiej Giełdy Papierów Wartościowych.
+3) Autor: fedesoriano Licencja: Data files © Original Authors
+4) .csv
+5) Należy do niego jeden plik data.csv o wadze 12MB, jednakże do repozytrium podpięte jest wiele plików w sekcji Code gdzie znajduje się aż 222 plików z danymi.
+6) Poprzez pobranie pliku data.csv, dzięki przyciskowi udostępnionemu na stronie.
+7) Między innymi do nauki, jak prowadzić firmę, by zapobiec przed jej bankructwem lub by nie popełniać takich błędów dzięki analizie wykresów dostępnych w pliku data.csv
+8) Rózne modele lub programy lub ich fragmenty do uruchomienia danego modelu.
+9) Boston House Prices-Advanced Regression Techniques, który posiada dane o cenach domów w Bostonie, który również udostępnia dane, które pokażą nam w co warto pójść, a w co nie by nie stracić wszystkiego przez wysokie koszty lub podatki danych mieszkań czy domów. 
+10) https://www.sciencedirect.com/science/article/abs/pii/S0377221716000412

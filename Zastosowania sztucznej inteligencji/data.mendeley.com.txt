@@ -1,0 +1,11 @@
+1) Deep Potato
+2) Zbiór danych dotyczy dotyczy obrazy liści ziemniaka z zestawem danych pomiarów referencyjncyh: w kierunku modelowania cech fizjologicznych ziemniaka.
+3) Autorzy: Bogdan Ruszczak, Dominika Boguszewska-Mańkowska
+Licencja : CC BY 4.0
+4) .html, .npz, .csv, .geojson, .hdr
+5) Posiada trzy foldery ze zdjęciami, pomiarami i fotomapami oraz z dwoma prezentacjami. Wszystko zajmuje ponad 1GB
+6) Poprzez przycisk pobierania wszystkich danych lub pojedynczych elementów
+7) Do prezentacji szczegółowej ziemniaka w celu prowadzenia nad nimi badań.
+8) Inne zbiory danych również pozwalające na analize danego tematu np. jak w Riverine Plastic Litter Dataset, gdzie mamy wiele infomracji prawnych o odpadach z plastiku.
+9) Dataset for: Integrated management of late blight on potato, który przedstawia badania nad zarazą ziemniaka.
+10)https://data.cipotato.org/
