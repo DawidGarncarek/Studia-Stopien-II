@@ -1,11 +1,22 @@
-1) Deep Potato
-2) Zbiór danych dotyczy dotyczy obrazy liści ziemniaka z zestawem danych pomiarów referencyjncyh: w kierunku modelowania cech fizjologicznych ziemniaka.
-3) Autorzy: Bogdan Ruszczak, Dominika Boguszewska-Mańkowska
+a) Zbiór danych "Deep Potato" można znaleźć na stronie Mendeley Data.
+
+b) Mendeley Data to platforma do przechowywania i udostępniania danych badawczych, głównie używana przez naukowców do publikowania zestawów danych związanych z badaniami naukowymi.
+
+c) Zbiór danych dotyczy dotyczy obrazy liści ziemniaka z zestawem danych pomiarów referencyjncyh: w kierunku modelowania cech fizjologicznych ziemniaka.
+
+d) Autorzy: Bogdan Ruszczak, Dominika Boguszewska-Mańkowska
 Licencja : CC BY 4.0
-4) .html, .npz, .csv, .geojson, .hdr
-5) Posiada trzy foldery ze zdjęciami, pomiarami i fotomapami oraz z dwoma prezentacjami. Wszystko zajmuje ponad 1GB
-6) Poprzez przycisk pobierania wszystkich danych lub pojedynczych elementów
-7) Do prezentacji szczegółowej ziemniaka w celu prowadzenia nad nimi badań.
-8) Inne zbiory danych również pozwalające na analize danego tematu np. jak w Riverine Plastic Litter Dataset, gdzie mamy wiele infomracji prawnych o odpadach z plastiku.
-9) Dataset for: Integrated management of late blight on potato, który przedstawia badania nad zarazą ziemniaka.
-10)https://data.cipotato.org/
+
+e) Dane są  dostępne w formatach .html, .npz, .csv, .geojson, .hdr
+
+f) Posiada trzy foldery ze zdjęciami, pomiarami i fotomapami oraz z dwoma prezentacjami. Wszystko zajmuje ponad 1GB
+
+g) Dane można pobrać bezpośrednio z Mendeley Data, często w formie plików ZIP lub poprzez linki do pobierania.
+
+h) Do prezentacji szczegółowej ziemniaka w celu prowadzenia nad nimi badań oraz przy identyfikacji chorób roślin, optymalizacji produkcji rolnej, a także do badań nad rolnictwem precyzyjnym.
+
+i) Na Mendeley Data można znaleźć powiązane artykuły naukowe, cytowania oraz informacje o projektach badawczych.
+
+j) Na Roboflow można znaleźć zbiory danych związane z analizą roślin, np. do wykrywania chorób roślin na podstawie obrazów.
+
+k) Inne zbiory danych rolniczych można znaleźć na stronach takich jak AgriDataHub czy Google Dataset Search.
