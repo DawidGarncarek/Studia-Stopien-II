@@ -1,1 +1,10 @@
-Projekt
+Projekt Zadanie3
+Przeglądarki:
+-Windows 10: Google Chrome, Brave, Microsoft Edge.
+-Android: Google Chrome, Mi Przeglądarka, Firefox.
+Strony do testowania przykładowo:
+- Wikipedia (wyświetlanie tekstów)
+- Google Maps (dynamiczna zmiana wyświetlanych elementów)
+- Youtube (pod kontekstem multimedialnym)
+- Facebook (jako portal społecznościowy)
+Chodzi o to, że każda strona ma trochę inne zadanie.
