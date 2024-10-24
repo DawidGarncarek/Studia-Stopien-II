@@ -1,1 +1,18 @@
 Architektury nowoczesnych systemów informatycznych
+Analityk Dziedziny - zadania 
+W roli Analityka Dziedziny Twoim głównym zadaniem jest zapewnienie, że projekt sklepu internetowego TechZone spełnia potrzeby i wymagania użytkowników oraz odpowiada na cele biznesowe. Zajmujesz się analizą wymagań, definiowaniem funkcji i zrozumieniem kontekstu biznesowego. Oto szczegółowe zadania, które mogą należeć do Twoich obowiązków:
+
+1. Zbieranie i analiza wymagań
+Przeprowadzanie rozmów z interesariuszami (np. właściciele projektu, klienci, zespoły techniczne) w celu zrozumienia potrzeb i oczekiwań.
+Definiowanie funkcji i funkcjonalności, które są kluczowe dla sklepu (personalizacja zestawów, oceny klientów, koszyk, konta użytkowników itp.).
+Tworzenie dokumentacji wymagań (np. dokumenty wymagań biznesowych lub funkcjonalnych).
+2. Analiza konkurencji
+Analizowanie istniejących sklepów internetowych oferujących podobne produkty (jak np. Morele.net, x-kom.pl), by zidentyfikować, jakie funkcje są najczęściej stosowane, a jakie mogą być innowacyjne.
+3. Tworzenie modeli biznesowych i procesów
+Projektowanie procesów zakupowych, rejestracji użytkowników, procesu składania zamówienia oraz personalizacji zestawów komputerowych.
+Opracowywanie diagramów przepływu (np. BPMN lub UML) dla kluczowych funkcji, takich jak dodanie produktu do koszyka, zamówienie, proces personalizacji.
+4. Wsparcie zespołu technicznego i testerskiego
+Przekazywanie szczegółowych wymagań technicznych zespołowi deweloperskiemu, zapewniając, że każdy zrozumie, jakie funkcje mają być zrealizowane.
+Współpraca z testerami przy tworzeniu scenariuszy testowych i akceptacyjnych.
+5. Zarządzanie zmianami
+Jeśli wymagania się zmieniają, będziesz odpowiadać za ich aktualizację i informowanie zespołu, jak te zmiany wpływają na cały projekt.
