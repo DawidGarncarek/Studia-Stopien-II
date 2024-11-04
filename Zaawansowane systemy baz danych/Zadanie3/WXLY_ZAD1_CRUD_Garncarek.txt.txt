@@ -1,0 +1,488 @@
+-- *******************************************************************************
+-- *                                        				                                 
+-- *   PROJEKTOWANIE BAZ DANYCH - LABORATORIUM 		  	 GRUPA: 1	               
+-- *                                       					                                   
+-- *******************************************************************************
+-- * 																		     
+-- *   Nazwisko i imię: Garncarek Dawid                                                         
+-- * 																		     
+-- *******************************************************************************
+-- * 																		     
+-- *   Nr indeksu: 101095                                                               
+-- * 																		     
+-- *******************************************************************************
+-- *******************************************************************************
+-- * 																		     
+-- *   Temat projektu: Lokalny Magazyn                                                               
+-- * 																		     
+-- *******************************************************************************
+
+
+
+
+-- -------------------------------------------------------------------------------
+-- TWORZENIE STRUKTURY BAZY DANYCH                                            
+-- -------------------------------------------------------------------------------
+
+CREATE TABLE dostawy (
+    id_dostawy             INTEGER NOT NULL,
+    nr_auta                INTEGER NOT NULL,
+    id_produktu            INTEGER NOT NULL,
+    data_przyjazdu         DATE NOT NULL,
+    id_pracownik           INTEGER NOT NULL,
+    samochod_id_auta       INTEGER NOT NULL
+);
+
+ALTER TABLE dostawy ADD CONSTRAINT dostawy_pk PRIMARY KEY ( id_dostawy );
+
+CREATE TABLE firma (
+    nr_lokalu        INTEGER NOT NULL,
+    specjalizacja    VARCHAR2(50 CHAR) NOT NULL,
+    wielkosc_firmy   VARCHAR2(60 CHAR) NOT NULL,
+    relacje          VARCHAR2(50 CHAR) NOT NULL,
+    nazwa_firmy      VARCHAR2(50) NOT NULL,
+    klient_id_klient INTEGER NOT NULL
+);
+
+ALTER TABLE firma ADD CONSTRAINT firma_pk PRIMARY KEY ( nr_lokalu );
+
+CREATE TABLE klient (
+    id_klient                INTEGER NOT NULL,
+    nr_zamowienia            INTEGER NOT NULL,
+    nr_telefonu              INTEGER NOT NULL,
+    nazwa_firmy              VARCHAR2(50) NOT NULL,
+    kod_pocztowy             CHAR(6 BYTE) NOT NULL,
+    nr_lokalu                INTEGER NOT NULL,
+    email                 VARCHAR2(50 CHAR) NOT NULL,
+    zamowienie_nr_zamowienia INTEGER NOT NULL
+);
+
+ALTER TABLE klient ADD CONSTRAINT klient_pk PRIMARY KEY ( id_klient );
+
+CREATE TABLE magazyn (
+    nazwa_magazynu               VARCHAR2(50 CHAR) NOT NULL,
+    id_obszar                    INTEGER NOT NULL,
+    kod_pocztowy                 CHAR(6 CHAR) NOT NULL,
+    miasto                       VARCHAR2(50 CHAR) NOT NULL,
+    dostawy                      INTEGER NOT NULL,
+    wyjazdy                      INTEGER NOT NULL,
+    wyjazdy_nr_wyjazdu           INTEGER NOT NULL,
+    strefa_skladowania_id_strefa INTEGER NOT NULL
+);
+
+ALTER TABLE magazyn ADD CONSTRAINT magazyn_pk PRIMARY KEY ( nazwa_magazynu );
+
+CREATE TABLE pracownik (
+    id_pracownik INTEGER NOT NULL,
+    imie         VARCHAR2(50 CHAR) NOT NULL,
+    nazwisko     VARCHAR2(50 CHAR) NOT NULL,
+    nr_telefonu  INTEGER NOT NULL,
+    stanowisko   VARCHAR2(50 CHAR) NOT NULL,
+    plec         VARCHAR2(50 CHAR) NOT NULL
+);
+
+ALTER TABLE pracownik ADD CONSTRAINT pracownik_pk PRIMARY KEY ( id_pracownik );
+
+CREATE TABLE produkt (
+    id_produkt         INTEGER NOT NULL,
+    waga               INTEGER NOT NULL,
+    wielkosc           INTEGER NOT NULL,
+    rodzaj             VARCHAR2(50 CHAR) NOT NULL,
+    data_waznosci      DATE NOT NULL,
+    dostawy_id_dostawy INTEGER NOT NULL
+);
+
+ALTER TABLE produkt ADD CONSTRAINT produkt_pk PRIMARY KEY ( id_produkt );
+
+CREATE TABLE samochod (
+    id_auta               INTEGER NOT NULL,
+    marka                 VARCHAR2(50 CHAR) NOT NULL,
+    nr_rejestracyjny      CHAR(30 CHAR) NOT NULL,
+    pojemnosc_zaladunkowa INTEGER NOT NULL,
+    dostepnosc            INTEGER NOT NULL
+);
+
+ALTER TABLE samochod ADD CONSTRAINT samochod_pk PRIMARY KEY ( id_auta );
+
+CREATE TABLE strefa_skladowania (
+    id_strefa          INTEGER NOT NULL,
+    nr_obszar          INTEGER NOT NULL,
+    wolne_miejsce      VARCHAR2(50 CHAR) NOT NULL,
+    rodzaj_skladowania VARCHAR2(50 CHAR) NOT NULL,
+    nr_pracownik       INTEGER NOT NULL,
+    id_produkt         INTEGER NOT NULL,
+    produkt_id_produkt INTEGER NOT NULL
+);
+
+ALTER TABLE strefa_skladowania ADD CONSTRAINT strefa_skladowania_pk PRIMARY KEY ( id_strefa );
+
+CREATE TABLE wyjazdy (
+    nr_wyjazdu               INTEGER NOT NULL,
+    nr_auta                  INTEGER NOT NULL,
+    data_wyjazdu             DATE NOT NULL,
+    id_pracownik             INTEGER NOT NULL,
+    nr_zamowienia            INTEGER NOT NULL,
+    samochod_id_auta         INTEGER NOT NULL,
+    zamowienie_nr_zamowienia INTEGER NOT NULL
+);
+
+ALTER TABLE wyjazdy ADD CONSTRAINT wyjazdy_pk PRIMARY KEY ( nr_wyjazdu );
+
+CREATE TABLE zamowienie (
+    nr_zamowienia  INTEGER NOT NULL,
+    kod_zamowienia INTEGER NOT NULL,
+    id_produkt     INTEGER NOT NULL,
+    ilosc_produktu INTEGER NOT NULL,
+    data_zaplaty   DATE NOT NULL,
+    sposob_zaplaty VARCHAR2(50) NOT NULL,
+    nazwa_firmy   VARCHAR2(50) NOT NULL
+);
+
+ALTER TABLE zamowienie ADD CONSTRAINT zamowienie_pk PRIMARY KEY ( nr_zamowienia );
+
+ALTER TABLE dostawy
+    ADD CONSTRAINT dostawy_samochod_fk FOREIGN KEY ( samochod_id_auta )
+        REFERENCES samochod ( id_auta );
+     
+ALTER TABLE firma
+    ADD CONSTRAINT firma_klient_fk FOREIGN KEY ( klient_id_klient )
+        REFERENCES klient ( id_klient );
+
+ALTER TABLE klient
+    ADD CONSTRAINT klient_zamowienie_fk FOREIGN KEY ( zamowienie_nr_zamowienia )
+        REFERENCES zamowienie ( nr_zamowienia );
+
+ALTER TABLE magazyn
+    ADD CONSTRAINT magazyn_strefa_skladowania_fk FOREIGN KEY ( strefa_skladowania_id_strefa )
+        REFERENCES strefa_skladowania ( id_strefa );
+
+ALTER TABLE magazyn
+    ADD CONSTRAINT magazyn_wyjazdy_fk FOREIGN KEY ( wyjazdy_nr_wyjazdu )
+        REFERENCES wyjazdy ( nr_wyjazdu );
+
+ALTER TABLE produkt
+    ADD CONSTRAINT produkt_dostawy_fk FOREIGN KEY ( dostawy_id_dostawy )
+        REFERENCES dostawy ( id_dostawy );
+
+ALTER TABLE strefa_skladowania
+    ADD CONSTRAINT strefa_skladowania_produkt_fk FOREIGN KEY ( produkt_id_produkt )
+        REFERENCES produkt ( id_produkt );
+
+ALTER TABLE wyjazdy
+    ADD CONSTRAINT wyjazdy_samochod_fk FOREIGN KEY ( samochod_id_auta )
+        REFERENCES samochod ( id_auta );
+
+ALTER TABLE wyjazdy
+    ADD CONSTRAINT wyjazdy_zamowienie_fk FOREIGN KEY ( zamowienie_nr_zamowienia )
+        REFERENCES zamowienie ( nr_zamowienia );
+
+
+CREATE TABLE Slownik (
+    id INTEGER NOT NULL,
+    idTable INTEGER NOT NULL,      
+    ShortNameTable VARCHAR2(50 CHAR) NOT NULL,
+    NameTable VARCHAR2(50 CHAR) NOT NULL,
+    ColumnName VARCHAR2(50 CHAR) NOT NULL,
+    Value INTEGER NOT NULL,
+    TextCode VARCHAR2(255 CHAR) NOT NULL
+);
+        
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   5 X INSERT  DO WSZYSTKICH TABEL                                               
+-- -------------------------------------------------------------------------------
+
+
+--slownik
+INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (1,1,'SS','Strefa Skladowania','id_strefa',1,'Strefa przeznaczona do składowania małych produktów');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (2,1,'SS','Strefa Skladowania','id_strefa',2,'Strefa przeznaczona do składowania średnich produktów');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (3,1,'SS','Strefa Skladowania','id_strefa',3,'Strefa przeznaczona do składowania dużych produktów');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (4,1,'SS','Strefa Skladowania','id_strefa',4,'Strefa przeznaczona do składowania produktów w lodówkach');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (5,1,'SS','Strefa Skladowania','id_strefa',5,'Strefa przeznaczona do składowania produktów luzem');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (6,1,'SS','Strefa Skladowania','nr_obszaru',1,'Obszar pierwszy w danej strefie składowania');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (7,1,'SS','Strefa Skladowania','nr_obszaru',2,'Obszar drugi w danej strefie składowania');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (8,1,'SS','Strefa Skladowania','nr_obszaru',3,'Obszar trzeci w danej strefie składowania');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (9,1,'SS','Strefa Skladowania','nr_obszaru',4,'Obszar czwarty w danej strefie składowania');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (10,1,'SS','Strefa Skladowania','nr_obszaru',5,'Obszar piąty w danej strefie składowania');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (16,1,'SS','Strefa Skladowania','rodzaj_składowania',1,'Euro 1m');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (17,1,'SS','Strefa Skladowania','rodzaj_składowania',2,'Paleta przemysłowa 1m');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (18,1,'SS','Strefa Skladowania','rodzaj_składowania',3,'Szklane opakowanie');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (19,1,'SS','Strefa Skladowania','rodzaj_składowania',4,'Karton duży');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (20,1,'SS','Strefa Skladowania','rodzaj_składowania',5,'Karton mały');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (21,2,'S','Samochod','pojemnosc_zaladunkowa',1,'2 m3');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (22,2,'S','Samochod','pojemnosc_zaladunkowa',2,'4 m3');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (23,2,'S','Samochod','pojemnosc_zaladunkowa',3,'8 m3');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (24,2,'S','Samochod','pojemnosc_zaladunkowa',4,'12 m3');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (25,2,'S','Samochod','dostepnosc',0,'samochód wolny');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (26,2,'S','Samochod','dostepnosc',1,'samochód zajęty');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (27,3,'P','Produkt','id_produkt',1,'Tabletki');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (28,3,'P','Produkt','id_produkt',2,'Syrop');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (29,3,'P','Produkt','id_produkt',3,'Maść');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (30,3,'P','Produkt','id_produkt',4,'Strzykawki');
+	INSERT INTO Slownik (id, idTable, ShortNameTable, NameTable, ColumnName, Value, TextCode)
+VALUES (31,3,'P','Produkt','id_produkt',5,'Opatrunki');
+
+
+--samochod
+INSERT INTO samochod(id_auta, marka, nr_rejestracyjny, pojemnosc_zaladunkowa, dostepnosc)
+VALUES (1,'FIAT','EWI-85A5',1,0);
+INSERT INTO samochod(id_auta, marka, nr_rejestracyjny, pojemnosc_zaladunkowa, dostepnosc)
+VALUES (2,'MAN','OOL-69Z1',4,1);
+INSERT INTO samochod(id_auta, marka, nr_rejestracyjny, pojemnosc_zaladunkowa, dostepnosc)
+VALUES (3,'MERCEDES','OP-54G7',4,0);
+INSERT INTO samochod(id_auta, marka, nr_rejestracyjny, pojemnosc_zaladunkowa, dostepnosc)
+VALUES (4,'FIAT','SKL-BU7W',2,1);
+INSERT INTO samochod(id_auta, marka, nr_rejestracyjny, pojemnosc_zaladunkowa, dostepnosc)
+VALUES (5,'OPEL','OPO-AZ12',3,1);
+
+--pracownik
+INSERT INTO pracownik(id_pracownik,imie,nazwisko,nr_telefonu,stanowisko,plec)
+VALUES (1,'Dawid','Garncarek',657345123,'Pracownik Magazynu','M');
+INSERT INTO pracownik(id_pracownik,imie,nazwisko,nr_telefonu,stanowisko,plec)
+VALUES (2,'Ilona','Kowalczyk',675867453,'Ksiegowa','K');
+INSERT INTO pracownik(id_pracownik,imie,nazwisko,nr_telefonu,stanowisko,plec)
+VALUES (3,'Beata','Pawelczak',634087123,'Sprzataczka','K');
+INSERT INTO pracownik(id_pracownik,imie,nazwisko,nr_telefonu,stanowisko,plec)
+VALUES (4,'Grzegorz','Bak',123643876,'Kierowca','M');
+INSERT INTO pracownik(id_pracownik,imie,nazwisko,nr_telefonu,stanowisko,plec)
+VALUES (5,'Jaroslaw','Put',879534231,'Pracownik Magazynu','M');
+INSERT INTO pracownik(id_pracownik,imie,nazwisko,nr_telefonu,stanowisko,plec)
+VALUES (6,'Przemyslaw','Gaska',563458761,'Administrator','M');
+
+--zamowienie
+INSERT INTO zamowienie(nr_zamowienia,kod_zamowienia,id_produkt,ilosc_produktu,data_zaplaty,sposob_zaplaty,nazwa_firmy)
+VALUES (1,3456,1,19,(TO_DATE('2015/05/03 21:52:44', 'yyyy/mm/dd hh24:mi:ss')),'przelew','Aptex');
+INSERT INTO zamowienie(nr_zamowienia,kod_zamowienia,id_produkt,ilosc_produktu,data_zaplaty,sposob_zaplaty,nazwa_firmy)
+VALUES (2,3456,2,10,(TO_DATE('2015/06/13 15:12:40', 'yyyy/mm/dd hh24:mi:ss')),'przelew','Aptex');
+INSERT INTO zamowienie(nr_zamowienia,kod_zamowienia,id_produkt,ilosc_produktu,data_zaplaty,sposob_zaplaty,nazwa_firmy)
+VALUES (3,3456,2,9,(TO_DATE('2016/01/03 19:02:46', 'yyyy/mm/dd hh24:mi:ss')),'gotowka','Aptex');
+INSERT INTO zamowienie(nr_zamowienia,kod_zamowienia,id_produkt,ilosc_produktu,data_zaplaty,sposob_zaplaty,nazwa_firmy)
+VALUES (4,6921,3,5,(TO_DATE('2016/02/03 10:04:24', 'yyyy/mm/dd hh24:mi:ss')),'przelew','Aptekol');
+INSERT INTO zamowienie(nr_zamowienia,kod_zamowienia,id_produkt,ilosc_produktu,data_zaplaty,sposob_zaplaty,nazwa_firmy)
+VALUES (5,6921,4,2,(TO_DATE('2014/12/03 14:22:45', 'yyyy/mm/dd hh24:mi:ss')),'przelew','Aptekol');
+
+--klient
+INSERT INTO klient(id_klient,nr_zamowienia,nr_telefonu,nazwa_firmy,kod_pocztowy,nr_lokalu,email,zamowienie_nr_zamowienia)
+VALUES (1,1,564564789,'Aptex','45-678',6,'aptex@wp.pl',1);
+INSERT INTO klient(id_klient,nr_zamowienia,nr_telefonu,nazwa_firmy,kod_pocztowy,nr_lokalu,email,zamowienie_nr_zamowienia)
+VALUES (2,2,564564789,'Aptex','45-678',6,'aptex@wp.pl',2);
+INSERT INTO klient(id_klient,nr_zamowienia,nr_telefonu,nazwa_firmy,kod_pocztowy,nr_lokalu,email,zamowienie_nr_zamowienia)
+VALUES (3,3,564564789,'Aptex','45-678',6,'aptex@wp.pl',3);
+INSERT INTO klient(id_klient,nr_zamowienia,nr_telefonu,nazwa_firmy,kod_pocztowy,nr_lokalu,email,zamowienie_nr_zamowienia)
+VALUES (4,2,567342978,'Apfultek','68-213',1,'Apfultek@onet.pl',2);
+INSERT INTO klient(id_klient,nr_zamowienia,nr_telefonu,nazwa_firmy,kod_pocztowy,nr_lokalu,email,zamowienie_nr_zamowienia)
+VALUES (5,5,125573645,'Leczmnie','21-378',2,'Leczmnie@wp.pl',5);
+
+--wyjazdy
+INSERT INTO wyjazdy(nr_wyjazdu,nr_auta,data_wyjazdu,id_pracownik,nr_zamowienia,samochod_id_auta,zamowienie_nr_zamowienia)
+VALUES (1,1,(TO_DATE('2015/12/05 6:22:45', 'yyyy/mm/dd hh24:mi:ss')),4,1,1,1);
+INSERT INTO wyjazdy(nr_wyjazdu,nr_auta,data_wyjazdu,id_pracownik,nr_zamowienia,samochod_id_auta,zamowienie_nr_zamowienia)
+VALUES (2,1,(TO_DATE('2015/12/05 6:22:45', 'yyyy/mm/dd hh24:mi:ss')),4,2,1,2);
+INSERT INTO wyjazdy(nr_wyjazdu,nr_auta,data_wyjazdu,id_pracownik,nr_zamowienia,samochod_id_auta,zamowienie_nr_zamowienia)
+VALUES (3,1,(TO_DATE('2015/12/05 6:22:45', 'yyyy/mm/dd hh24:mi:ss')),4,3,1,3);
+INSERT INTO wyjazdy(nr_wyjazdu,nr_auta,data_wyjazdu,id_pracownik,nr_zamowienia,samochod_id_auta,zamowienie_nr_zamowienia)
+VALUES (4,4,(TO_DATE('2013/12/08 3:12:45', 'yyyy/mm/dd hh24:mi:ss')),7,5,1,5);
+INSERT INTO wyjazdy(nr_wyjazdu,nr_auta,data_wyjazdu,id_pracownik,nr_zamowienia,samochod_id_auta,zamowienie_nr_zamowienia)
+VALUES (5,2,(TO_DATE('2013/12/05 7:52:45', 'yyyy/mm/dd hh24:mi:ss')),8,5,1,5);
+
+--dostawy
+INSERT INTO dostawy (id_dostawy, nr_auta, id_produktu, data_przyjazdu, id_pracownik, samochod_id_auta)
+VALUES (1,1,1,(TO_DATE('2016/03/12 2:09:44', 'yyyy/mm/dd hh24:mi:ss')),1,1);
+INSERT INTO dostawy (id_dostawy, nr_auta, id_produktu, data_przyjazdu, id_pracownik, samochod_id_auta)
+VALUES (2,3,5,(TO_DATE('2016/11/22 15:53:44', 'yyyy/mm/dd hh24:mi:ss')),1,3);
+INSERT INTO dostawy (id_dostawy, nr_auta, id_produktu, data_przyjazdu, id_pracownik, samochod_id_auta)
+VALUES (3,4,3,(TO_DATE('2014/06/22 16:42:44', 'yyyy/mm/dd hh24:mi:ss')),5,4);
+INSERT INTO dostawy (id_dostawy, nr_auta, id_produktu, data_przyjazdu, id_pracownik, samochod_id_auta)
+VALUES (4,3,4,(TO_DATE('2014/06/30 17:22:44', 'yyyy/mm/dd hh24:mi:ss')),5,3);
+INSERT INTO dostawy (id_dostawy, nr_auta, id_produktu, data_przyjazdu, id_pracownik, samochod_id_auta)
+VALUES (5,2,1,(TO_DATE('2014/12/21 11:02:44', 'yyyy/mm/dd hh24:mi:ss')),5,2);
+
+--firma
+INSERT INTO firma(nr_lokalu, specjalizacja, wielkosc_firmy, relacje,  nazwa_firmy, klient_id_klient) 
+VALUES (54,'produkty mięsne', 'lokalna', 'dobre', 'Aptex', 1);
+INSERT INTO firma(nr_lokalu, specjalizacja, wielkosc_firmy, relacje,  nazwa_firmy, klient_id_klient) 
+VALUES (234,'farmacja', 'ogólno krajowa', 'średnie', 'MleczarniaJakTalala', 2);
+INSERT INTO firma(nr_lokalu, specjalizacja, wielkosc_firmy, relacje,  nazwa_firmy, klient_id_klient) 
+VALUES (69,'slodycze', 'europejska', 'dobre', 'Aptekol', 3);
+INSERT INTO firma(nr_lokalu, specjalizacja, wielkosc_firmy, relacje,  nazwa_firmy, klient_id_klient) 
+VALUES (21,'sprzet AGD', 'lokalna', 'slabe', 'Ciuciu', 5);
+INSERT INTO firma(nr_lokalu, specjalizacja, wielkosc_firmy, relacje,  nazwa_firmy, klient_id_klient) 
+VALUES (37,'owoce i warzywa', 'lokalna', 'dobre', 'Pomidor', 4);
+
+--produkt
+INSERT INTO produkt(id_produkt,waga,wielkosc,rodzaj,data_waznosci,dostawy_id_dostawy)
+VALUES (1,20,2,'opakowanie',(TO_DATE('2018/10/05 12:52:45', 'yyyy/mm/dd hh24:mi:ss')),1);
+INSERT INTO produkt(id_produkt,waga,wielkosc,rodzaj,data_waznosci,dostawy_id_dostawy)
+VALUES (2,30,3,'opakowanie szklane',(TO_DATE('2019/10/05 15:42:45', 'yyyy/mm/dd hh24:mi:ss')),1);
+INSERT INTO produkt(id_produkt,waga,wielkosc,rodzaj,data_waznosci,dostawy_id_dostawy)
+VALUES (3,50,4,'karton',(TO_DATE('2020/10/05 10:42:45', 'yyyy/mm/dd hh24:mi:ss')),1);
+INSERT INTO produkt(id_produkt,waga,wielkosc,rodzaj,data_waznosci,dostawy_id_dostawy)
+VALUES (4,120,5,'paleta',(TO_DATE('2019/10/05 21:12:45', 'yyyy/mm/dd hh24:mi:ss')),2);
+INSERT INTO produkt(id_produkt,waga,wielkosc,rodzaj,data_waznosci,dostawy_id_dostawy)
+VALUES (5,20,2,'opakowanie',(TO_DATE('2019/10/05 22:42:45', 'yyyy/mm/dd hh24:mi:ss')),2);
+
+--strefa skladowania
+INSERT INTO strefa_skladowania(id_strefa,nr_obszar,wolne_miejsce,rodzaj_skladowania,nr_pracownik,id_produkt,produkt_id_produkt)
+VALUES (1,1,'brak','Jednostki paletowe',1,1,1);
+INSERT INTO strefa_skladowania(id_strefa,nr_obszar,wolne_miejsce,rodzaj_skladowania,nr_pracownik,id_produkt,produkt_id_produkt)
+VALUES (2,2,'wolne','Kartony',5,2,2);
+INSERT INTO strefa_skladowania(id_strefa,nr_obszar,wolne_miejsce,rodzaj_skladowania,nr_pracownik,id_produkt,produkt_id_produkt)
+VALUES (3,1,'brak','Chlodnia',5,3,3);
+INSERT INTO strefa_skladowania(id_strefa,nr_obszar,wolne_miejsce,rodzaj_skladowania,nr_pracownik,id_produkt,produkt_id_produkt)
+VALUES (4,2,'wolne','Jednostki paletowe',1,4,4);
+INSERT INTO strefa_skladowania(id_strefa,nr_obszar,wolne_miejsce,rodzaj_skladowania,nr_pracownik,id_produkt,produkt_id_produkt)
+VALUES (5,3,'wolne','Opakowania zbiorcze',5,4,4);
+
+--magazyn
+INSERT INTO magazyn(nazwa_magazynu,id_obszar,kod_pocztowy,miasto,dostawy,wyjazdy,wyjazdy_nr_wyjazdu,strefa_skladowania_id_strefa)
+VALUES ('W.P.R.O.S.T_1',1,'57-234','Gorsko',1,1,1,1);
+INSERT INTO magazyn(nazwa_magazynu,id_obszar,kod_pocztowy,miasto,dostawy,wyjazdy,wyjazdy_nr_wyjazdu,strefa_skladowania_id_strefa)
+VALUES ('W.P.R.O.S.T_2',2,'57-234','Gorsko',3,4,4,2);
+INSERT INTO magazyn(nazwa_magazynu,id_obszar,kod_pocztowy,miasto,dostawy,wyjazdy,wyjazdy_nr_wyjazdu,strefa_skladowania_id_strefa)
+VALUES ('W.P.R.O.S.T_3',3,'57-234','Gorsko',5,3,3,3);
+INSERT INTO magazyn(nazwa_magazynu,id_obszar,kod_pocztowy,miasto,dostawy,wyjazdy,wyjazdy_nr_wyjazdu,strefa_skladowania_id_strefa)
+VALUES ('W.P.R.O.S.T_4',1,'89-678','Gorsko',1,5,5,1);
+INSERT INTO magazyn(nazwa_magazynu,id_obszar,kod_pocztowy,miasto,dostawy,wyjazdy,wyjazdy_nr_wyjazdu,strefa_skladowania_id_strefa)
+VALUES ('W.P.R.O.S.T_5',2,'89-678','Gorsko',2,3,3,2);
+
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   3 X SELECT  ( PRZYKŁADY Z JOIN NA MIN. 3 TABELACH)                                                   
+-- -------------------------------------------------------------------------------
+
+SELECT DISTINCT
+p.nazwisko,
+ss.id_strefa,
+pr.id_produkt,
+pr.rodzaj,
+AVG(pr.waga),
+sl.TextCode
+FROM pracownik p
+JOIN strefa_skladowania ss ON p.id_pracownik = ss.nr_pracownik
+JOIN produkt pr ON pr.id_produkt = ss.produkt_id_produkt
+JOIN slownik sl ON ss.id_strefa = sl.Value
+WHERE sl.ColumnName = 'id_strefa' AND pr.rodzaj like 'opakowanie%' 
+GROUP BY p.nazwisko,ss.id_strefa,pr.id_produkt,pr.rodzaj,sl.TextCode;
+
+SELECT
+m.wyjazdy,
+w.id_pracownik,
+p.nazwisko,
+z.nr_zamowienia,
+s.marka
+FROM magazyn m
+JOIN wyjazdy w ON m.wyjazdy_nr_wyjazdu = w.nr_wyjazdu
+JOIN samochod s ON s.id_auta = w.nr_auta
+JOIN pracownik p ON p.id_pracownik = w.id_pracownik
+JOIN zamowienie z ON z.nr_zamowienia = w.zamowienie_nr_zamowienia
+WHERE z.nr_zamowienia not in 1;
+
+
+SELECT MAX(p.id_produkt),p.data_waznosci,ss.id_strefa,ss.nr_obszar,sl.TextCode
+FROM produkt p
+JOIN strefa_skladowania ss ON p.id_produkt = ss.produkt_id_produkt
+JOIN slownik sl ON ss.id_strefa = sl.Value
+WHERE columnname like 'id_strefa'
+GROUP BY p.data_waznosci,ss.id_strefa,ss.nr_obszar,sl.TextCode
+HAVING ss.nr_obszar > 1
+ORDER BY ss.id_strefa desc;
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   3 X UPDATE                                                      
+-- -------------------------------------------------------------------------------
+
+UPDATE samochod 
+SET nr_rejestracyjny = 'GW-43WS'
+WHERE id_auta = (SELECT s.id_auta
+FROM samochod s
+JOIN wyjazdy w ON s.id_auta = w.samochod_id_auta
+WHERE w.nr_wyjazdu = 1);
+
+UPDATE zamowienie
+SET kod_zamowienia = '6921'
+WHERE nr_zamowienia = 5
+AND id_produkt = 4
+AND nazwa_firmy like '%Aptekol%';
+
+UPDATE strefa_skladowania
+SET nr_pracownik = (
+SELECT id_pracownik FROM pracownik
+WHERE stanowisko like 'Pracownik Magazynu'
+AND id_pracownik = 5)
+WHERE id_strefa = 4;
+
+-- -------------------------------------------------------------------------------
+-- POLECENIA:   3 X DELETE                                                      
+-- -------------------------------------------------------------------------------
+
+DELETE FROM strefa_skladowania
+WHERE nr_pracownik = (SELECT MIN(id_pracownik) FROM pracownik
+WHERE id_pracownik = (SELECT Value FROM slownik
+WHERE id = 2));
+
+DELETE FROM pracownik
+WHERE id_pracownik = (SELECT nr_pracownik FROM strefa_skladowania
+WHERE id_strefa = 1);
+
+DELETE FROM pracownik 
+WHERE id_pracownik < 4
+AND id_pracownik IN
+(
+SELECT p.id_produkt 
+FROM produkt p 
+JOIN strefa_skladowania ss
+ON p.id_produkt = ss.produkt_id_produkt
+WHERE p.id_produkt = 2
+);
+
+-- -------------------------------------------------------------------------------
+-- USUWANIE STRUKTURY BAZY DANYCH                                            
+-- -------------------------------------------------------------------------------
+
+
+DROP TABLE Slownik CASCADE CONSTRAINTS;
+
+DROP TABLE dostawy CASCADE CONSTRAINTS;
+
+DROP TABLE klient CASCADE CONSTRAINTS;
+
+DROP TABLE magazyn CASCADE CONSTRAINTS;
+
+DROP TABLE pracownik CASCADE CONSTRAINTS;
+
+DROP TABLE produkt CASCADE CONSTRAINTS;
+
+DROP TABLE samochod CASCADE CONSTRAINTS;
+
+DROP TABLE strefa_skladowania CASCADE CONSTRAINTS;
+
+DROP TABLE wyjazdy CASCADE CONSTRAINTS;
+
+DROP TABLE zamowienie CASCADE CONSTRAINTS;
+
+DROP TABLE firma CASCADE CONSTRAINTS;
