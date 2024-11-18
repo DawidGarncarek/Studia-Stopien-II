@@ -1,0 +1,142 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "2081445d-5419-4cf3-8bac-4e23eacf233c",
+   "metadata": {},
+   "source": [
+    "# Zadanie\n",
+    "\n",
+    "- Autor: Dawid Garncarek\n",
+    "- Grupa: 3\n",
+    "- Prowadzący: Bogdan Ruszczak\n",
+    "- Opis:\n",
+    "  1. Analiza danych cen, wagi i BMI\n",
+    "  2. Analiza kalorii użytkowników i produktów spożywczych\n",
+    "  3. Analiza planu ćwiczeniowego"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "21351666",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import cx_Oracle\n",
+    "import pandas as pd\n",
+    "import seaborn as sns\n",
+    "import matplotlib.pyplot as plt\n",
+    "import plotly.express as px"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f0a209b7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "dsn = cx_Oracle.makedsn("host", "port", service_name="service_name")
+     connection = cx_Oracle.connect(user="username", password="password", dsn=dsn)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "82d162f4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# wybranie danych z tabeli 1, tabeli 2, ...."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "00d26dbc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# polaczenie danych z tabel w dataframe1, dataframe2, dataframe3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3dcb7488",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# dataframe1\n",
+    "df1 = .....merge....................."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c9414e7b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# wizualizacja 1\n",
+    "df1.............plt.....sns........plotly....."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "56641560",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# kolejne wizualizacje"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cb4ae3ce",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b67556a6",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "68adbe01",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.7"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
