@@ -37,8 +37,8 @@
    "metadata": {},
    "outputs": [],
    "source": [
-    "dsn = cx_Oracle.makedsn("host", "port", service_name="service_name")
-     connection = cx_Oracle.connect(user="username", password="password", dsn=dsn)"
+    "dsn = cx_Oracle.makedsn("217.173.198.135", "1521", service_name="tpdb")
+     connection = cx_Oracle.connect(user="S101095", password="S101095", dsn=dsn)"
    ]
   },
   {
