@@ -1,181 +1,132 @@
-{
- "cells": [
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "# Zadanie\n",
-    "\n",
-    "- Autor: Dawid Garncarek\n",
-    "- Grupa: 3\n",
-    "- Prowadzący: Bogdan Ruszczak\n",
-    "- Opis:\n",
-    "  1. Analiza danych cen, wagi i BMI.\n",
-    "  2. Analiza kalorii użytkowników i produktów spożywczych.\n",
-    "  3. Analiza planu ćwiczeniowego."
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# Importowanie bibliotek\n",
-    "!pip install sqlalchemy cx_Oracle pandas\n",
-    "!pip install seaborn\n",
-    "!pip install matplotlib\n",
-    "!pip install plotly\n",
-    "import cx_Oracle\n",
-    "import pandas as pd\n",
-    "import matplotlib.pyplot as plt\n",
-    "import seaborn as sns\n",
-    "import plotly.express as px\n",
-    "\n",
-    "# Połączenie z bazą\n",
-    "dsn = cx_Oracle.makedsn(\"217.173.198.135\", \"1521\", service_name=\"tpdb\")\n",
-    "connection = cx_Oracle.connect(user=\"S101095\", password=\"S101095\", dsn=dsn)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# Analiza 1: Cena, waga i BMI\n",
-    "\n",
-    "# Pobranie danych\n",
-    "query_price = \"SELECT PriceDate, Price, UserName FROM Price\"\n",
-    "query_weight = \"SELECT WeightDate, UserWeight, UserName FROM Weight\"\n",
-    "query_bmi = \"SELECT CalculationDate, ResultBMI, UserName FROM BmiResult\"\n",
-    "\n",
-    "df_price = pd.read_sql(query_price, connection)\n",
-    "df_weight = pd.read_sql(query_weight, connection)\n",
-    "df_bmi = pd.read_sql(query_bmi, connection)\n",
-    "\n",
-    "# Tworzenie DataFrame\n",
-    "df_analysis1 = pd.merge(df_weight, df_bmi, on=\"UserName\", how=\"inner\")\n",
-    "df_analysis1 = pd.merge(df_analysis1, df_price, on=\"UserName\", how=\"inner\")\n",
-    "\n",
-    "# Wizualizacja 1: Zależność BMI od wagi\n",
-    "sns.scatterplot(data=df_analysis1, x=\"UserWeight\", y=\"ResultBMI\", hue=\"UserName\")\n",
-    "plt.title(\"Zależność BMI od wagi użytkowników\")\n",
-    "plt.xlabel(\"Waga (kg)\")\n",
-    "plt.ylabel(\"BMI\")\n",
-    "plt.grid()\n",
-    "plt.show()\n",
-    "\n",
-    "# Wizualizacja 2: Średnia cena w czasie\n",
-    "df_price['PriceDate'] = pd.to_datetime(df_price['PriceDate'])\n",
-    "df_avg_price = df_price.groupby(df_price['PriceDate'].dt.to_period(\"M\")).mean().reset_index()\n",
-    "plt.plot(df_avg_price['PriceDate'].astype(str), df_avg_price['Price'], marker='o')\n",
-    "plt.title(\"Średnia cena w czasie\")\n",
-    "plt.xlabel(\"Data\")\n",
-    "plt.ylabel(\"Cena (PLN)\")\n",
-    "plt.grid()\n",
-    "plt.show()\n",
-    "\n",
-    "# Grupowanie\n",
-    "grouped_analysis1 = df_analysis1.groupby(\"UserName\").agg({\"Price\": \"mean\", \"UserWeight\": \"mean\", \"ResultBMI\": \"mean\"})\n",
-    "print(grouped_analysis1)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# Analiza 2: Kalorie i produkty spożywcze\n",
-    "\n",
-    "# Pobranie danych\n",
-    "query_calories_needed = \"SELECT NewCaloriesDate, CaloriesNeededResult, UserName FROM UserCaloriesNeeded\"\n",
-    "query_calories_result = \"SELECT NewCaloriesDate, Calories, ProductId, UserName FROM UserCaloriesResult\"\n",
-    "query_food_products = \"SELECT Id, ProductName, Calories_100g FROM FoodProducts\"\n",
-    "\n",
-    "df_calories_needed = pd.read_sql(query_calories_needed, connection)\n",
-    "df_calories_result = pd.read_sql(query_calories_result, connection)\n",
-    "df_food_products = pd.read_sql(query_food_products, connection)\n",
-    "\n",
-    "# Tworzenie DataFrame\n",
-    "df_analysis2 = pd.merge(df_calories_result, df_calories_needed, on=\"UserName\", how=\"inner\")\n",
-    "df_analysis2 = pd.merge(df_analysis2, df_food_products, left_on=\"ProductId\", right_on=\"Id\", how=\"inner\")\n",
-    "\n",
-    "# Wizualizacja 1: Kalorie spożyte vs zapotrzebowanie\n",
-    "px.bar(df_analysis2, x=\"UserName\", y=[\"Calories\", \"CaloriesNeededResult\"], title=\"Kalorie spożyte vs zapotrzebowanie\")\n",
-    "\n",
-    "# Wizualizacja 2: Najpopularniejsze produkty\n",
-    "popular_products = df_analysis2.groupby(\"ProductName\")[\"Calories\"].sum().nlargest(5).reset_index()\n",
-    "sns.barplot(data=popular_products, x=\"Calories\", y=\"ProductName\")\n",
-    "plt.title(\"Top 5 najpopularniejszych produktów\")\n",
-    "plt.xlabel(\"Kalorie\")\n",
-    "plt.ylabel(\"Produkt\")\n",
-    "plt.grid()\n",
-    "plt.show()\n",
-    "\n",
-    "# Grupowanie\n",
-    "grouped_analysis2 = df_analysis2.groupby(\"UserName\").agg({\"Calories\": \"sum\", \"CaloriesNeededResult\": \"mean\"})\n",
-    "print(grouped_analysis2)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# Analiza 3: Plan ćwiczeniowy\n",
-    "\n",
-    "# Pobranie danych\n",
-    "query_exercise_sets = \"SELECT UserName, ExerciseSetId, TrainingDay FROM UserExerciseSets\"\n",
-    "query_exercises = \"SELECT Id, ExerciseName, IntensityLevel, DurationMinutes FROM Exercises\"\n",
-    "query_users = \"SELECT Id, UserName FROM AspNetUsers\"\n",
-    "\n",
-    "df_exercise_sets = pd.read_sql(query_exercise_sets, connection)\n",
-    "df_exercises = pd.read_sql(query_exercises, connection)\n",
-    "df_users = pd.read_sql(query_users, connection)\n",
-    "\n",
-    "# Tworzenie DataFrame\n",
-    "df_analysis3 = pd.merge(df_exercise_sets, df_exercises, left_on=\"ExerciseSetId\", right_on=\"Id\", how=\"inner\")\n",
-    "df_analysis3 = pd.merge(df_analysis3, df_users, on=\"UserName\", how=\"inner\")\n",
-    "\n",
-    "# Wizualizacja 1: Intensywność ćwiczeń\n",
-    "sns.countplot(data=df_analysis3, x=\"IntensityLevel\", order=df_analysis3[\"IntensityLevel\"].value_counts().index)\n",
-    "plt.title(\"Rozkład intensywności ćwiczeń\")\n",
-    "plt.xlabel(\"Intensywność\")\n",
-    "plt.ylabel(\"Liczba\")\n",
-    "plt.grid()\n",
-    "plt.show()\n",
-    "\n",
-    "# Wizualizacja 2: Czas ćwiczeń\n",
-    "px.histogram(df_analysis3, x=\"DurationMinutes\", title=\"Czas trwania ćwiczeń\")\n",
-    "\n",
-    "# Grupowanie\n",
-    "grouped_analysis3 = df_analysis3.groupby(\"UserName\").agg({\"DurationMinutes\": \"sum\", \"TrainingDay\": \"count\"})\n",
-    "print(grouped_analysis3)"
-   ]
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.9.7"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+    # Zadanie4
+    #"- Autor: Dawid Garncarek\n",
+    #"- Grupa: 3\n",
+    #"- Prowadzący: Bogdan Ruszczak\n",
+    #"- Opis: \n",
+    #"  1. Analiza danych cen, wagi i BMI\n",
+    #"  2. Analiza kalorii użytkowników i produktów spożywczych\n",
+    #"  3. Analiza planu ćwiczeniowego"
+
+    !pip install sqlalchemy cx_Oracle pandas
+    !pip install seaborn
+    !pip install matplotlib
+    !pip install plotly
+    import os
+    from sqlalchemy import create_engine
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    import plotly.express as px
+    from IPython.display import display
+    import cx_Oracle
+
+
+    username = 'S101095'
+    password = 'S101095'
+    host = '217.173.198.135'
+    port = '1521'
+    service_name = 'tpdb'
+
+    dsn = f'{username}:{password}@{host}:{port}/?service_name={service_name}'
+ 
+    engine = create_engine(f'oracle+cx_oracle://{username}:{password}@{host}:{port}/?service_name={service_name}')
+    connection = engine.connect()
+
+# Analiza 1
+# Pobranie danych
+#query_price = """SELECT pricedate, price, username FROM price"""
+#query_weight = """SELECT weightdate, userweight, username FROM weight"""
+#query_bmi = """SELECT calculationdate, resultbmi, username FROM bmiresult"""
+
+#df_price = pd.read_sql(query_price, connection)
+#df_weight = pd.read_sql(query_weight, connection)
+#df_bmi = pd.read_sql(query_bmi, connection)
+
+# Tworzenie DataFrame
+#df_analysis1 = pd.merge(df_weight, df_bmi, on="username", how="inner")
+#df_analysis1 = pd.merge(df_analysis1, df_price, on="username", how="inner")
+
+# Wizualizacja 1: Zależność BMI od wagi
+#sns.scatterplot(data=df_analysis1, x="userweight", y="resultbmi", hue="username")
+#plt.title("Zależność BMI od wagi użytkowników")
+#plt.xlabel("Waga (kg)")
+#plt.ylabel("BMI")
+#plt.grid()
+#plt.show()
+
+# Wizualizacja 2: Średnia cena w czasie
+#df_price['pricedate'] = pd.to_datetime(df_price['pricedate'])
+#df_avg_price = df_price.groupby(df_price['pricedate'].dt.to_period("M")).mean().reset_index()
+#plt.plot(df_avg_price['pricedate'].astype(str), df_avg_price['price'], marker='o')
+#plt.title("Średnia cena w czasie")
+#plt.xlabel("Data")
+#plt.ylabel("Cena (PLN)")
+#plt.grid()
+#plt.show()
+
+# Grupowanie
+grouped_analysis1 = df_analysis1.groupby("username").agg({"price": "mean", "userweight": "mean", "resultbmi": "mean"})
+print(grouped_analysis1)
+
+# Analiza 2
+
+# Pobranie danych
+query_calories_needed = "SELECT newcaloriesdate, caloriesneededresult, username FROM usercaloriesneeded"
+query_calories_result = "SELECT newcaloriesdate, calories, productid, username FROM usercaloriesresult"
+query_food_products = "SELECT id, productname, calories_100g FROM foodproducts"
+
+df_calories_needed = pd.read_sql(query_calories_needed, connection)
+df_calories_result = pd.read_sql(query_calories_result, connection)
+df_food_products = pd.read_sql(query_food_products, connection)
+
+# Tworzenie DataFrame
+df_analysis2 = pd.merge(df_calories_result, df_calories_needed, on="username", how="inner")
+df_analysis2 = pd.merge(df_analysis2, df_food_products, left_on="productid", right_on="id", how="inner")
+
+# Wizualizacja 1: Kalorie spożyte vs zapotrzebowanie
+px.bar(df_analysis2, x="username", y=["calories", "caloriesneededresult"], title="Kalorie spożyte vs zapotrzebowanie")
+
+# Wizualizacja 2: Najpopularniejsze produkty
+popular_products = df_analysis2.groupby("productname")["calories"].sum().nlargest(5).reset_index()
+sns.barplot(data=popular_products, x="calories", y="productname")
+plt.title("Top 5 najpopularniejszych produktów")
+plt.xlabel("Kalorie")
+plt.ylabel("Produkt")
+plt.grid()
+plt.show()
+
+# Grupowanie
+grouped_analysis2 = df_analysis2.groupby("caloriesneededresult").agg({"calories": "sum", "caloriesneededresult": "mean"})
+print(grouped_analysis2)
+
+# Analiza 3
+
+# Pobranie danych
+query_exercise_sets = "SELECT username, exercisesetid, trainingday FROM userexercisesets"
+query_exercises = "SELECT id, exercisename, intensitylevel, durationminutes FROM exercises"
+query_users = "SELECT id, username FROM aspnetusers"
+
+df_exercise_sets = pd.read_sql(query_exercise_sets, connection)
+df_exercises = pd.read_sql(query_exercises, connection)
+df_users = pd.read_sql(query_users, connection)
+
+# Tworzenie DataFrame
+df_analysis3 = pd.merge(df_exercise_sets, df_exercises, left_on="exercisesetid", right_on="id", how="inner")
+df_analysis3 = pd.merge(df_analysis3, df_users, on="username", how="inner")
+
+# Wizualizacja 1: Intensywność ćwiczeń
+sns.countplot(data=df_analysis3, x="intensitylevel", order=df_analysis3["intensitylevel"].value_counts().index)
+plt.title("Rozkład intensywności ćwiczeń")
+plt.xlabel("Intensywność")
+plt.ylabel("Liczba")
+plt.grid()
+plt.show()
+
+# Wizualizacja 2: Czas ćwiczeń
+px.histogram(df_analysis3, x="durationminutes", title="Czas trwania ćwiczeń")
+
+# Grupowanie
+grouped_analysis3 = df_analysis3.groupby("username").agg({"durationminutes": "sum", "trainingday": "count"})
+print(grouped_analysis3)
+
+   
