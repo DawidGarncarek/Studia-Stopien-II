@@ -34,39 +34,60 @@
 
 # Analiza 1
 # Pobranie danych
-#query_price = """SELECT pricedate, price, username FROM price"""
-#query_weight = """SELECT weightdate, userweight, username FROM weight"""
-#query_bmi = """SELECT calculationdate, resultbmi, username FROM bmiresult"""
+query_price = """SELECT pricedate, price, username FROM price"""
+query_weight = """SELECT weightdate, userweight, username FROM weight"""
+query_bmi = """SELECT calculationdate, resultbmi, username FROM bmiresult"""
 
-#df_price = pd.read_sql(query_price, connection)
-#df_weight = pd.read_sql(query_weight, connection)
-#df_bmi = pd.read_sql(query_bmi, connection)
+df_price = pd.read_sql(query_price, connection)
+df_weight = pd.read_sql(query_weight, connection)
+df_bmi = pd.read_sql(query_bmi, connection)
 
 # Tworzenie DataFrame
-#df_analysis1 = pd.merge(df_weight, df_bmi, on="username", how="inner")
-#df_analysis1 = pd.merge(df_analysis1, df_price, on="username", how="inner")
+df_analysis1 = pd.merge(df_weight, df_bmi, on="username", how="inner")
+df_analysis2 = pd.merge(df_analysis1, df_bmi, on="username", how="inner")
+df_analysis1 = pd.merge(df_analysis1, df_weight, on="username", how="inner")
 
 # Wizualizacja 1: Zależność BMI od wagi
-#sns.scatterplot(data=df_analysis1, x="userweight", y="resultbmi", hue="username")
-#plt.title("Zależność BMI od wagi użytkowników")
-#plt.xlabel("Waga (kg)")
-#plt.ylabel("BMI")
-#plt.grid()
-#plt.show()
+df_weight['weightdate'] = pd.to_datetime(df_weight['weightdate'])
+df_bmi['calculationdate'] = pd.to_datetime(df_bmi['calculationdate'])
+
+# Tworzenie DataFrame z połączonymi datami i wartościam
+df_weight.rename(columns={"weightdate": "Date", "userweight": "Value", "username": "User"}, inplace=True)
+df_weight["Type"] = "Weight"
+df_bmi.rename(columns={"calculationdate": "Date", "resultbmi": "Value", "username": "User"}, inplace=True)
+df_bmi["Type"] = "BMI"
+df_combined = pd.concat([df_weight, df_bmi], ignore_index=True)
+
+# Sortowanie danych dla poprawnej wizualizacji
+df_combined.sort_values(by=["User", "Date"], inplace=True)
+
+# Formatowanie wykresu
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=df_combined, x="Date", y="Value", hue="User", style="Type", markers=True, dashes=True)
+plt.title("BMI oraz waga użytkowników w czasie")
+plt.xlabel("Data")
+plt.ylabel("Wartość")
+plt.legend(loc="best", fontsize="small", title="Użytkownik i typ")
+plt.grid()
+plt.tight_layout()
+plt.show()
 
 # Wizualizacja 2: Średnia cena w czasie
-#df_price['pricedate'] = pd.to_datetime(df_price['pricedate'])
-#df_avg_price = df_price.groupby(df_price['pricedate'].dt.to_period("M")).mean().reset_index()
-#plt.plot(df_avg_price['pricedate'].astype(str), df_avg_price['price'], marker='o')
-#plt.title("Średnia cena w czasie")
-#plt.xlabel("Data")
-#plt.ylabel("Cena (PLN)")
-#plt.grid()
-#plt.show()
+df_price['pricedate'] = pd.to_datetime(df_price['pricedate'])
+df_avg_price = df_price.groupby(df_price['pricedate'].dt.to_period("M")).mean(numeric_only=True).reset_index()
+plt.plot(df_avg_price['pricedate'].astype(str), df_avg_price['price'], marker='o')
+plt.title("Średnia cena w czasie")
+plt.xlabel("Data")
+plt.ylabel("Cena (PLN)")
+plt.grid()
+plt.show()
 
 # Grupowanie
-grouped_analysis1 = df_analysis1.groupby("username").agg({"price": "mean", "userweight": "mean", "resultbmi": "mean"})
-print(grouped_analysis1)
+grouped_bmi = df_analysis1.groupby("username").agg({
+    "resultbmi": ["mean", "min", "max"]
+})
+grouped_bmi.columns = ["Średnie_BMI", "Minimalne_BMI", "Maksymalne_BMI"]
+print(grouped_bmi)
 
 # Analiza 2
 
