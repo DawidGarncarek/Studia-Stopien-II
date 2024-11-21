@@ -102,14 +102,33 @@ df_calories_result_and_product_name = pd.read_sql(query_calories_result_and_prod
 # Tworzenie DataFrame
 df_analysis2 = pd.merge(df_calories_result_and_product_name, df_calories_needed, on="username", how="inner")
 
-# Wizualizacja 1: Kalorie spożyte vs zapotrzebowanie
+# Grupowanie zapotrzebowania kalorycznego (jedna wartość na użytkownika)
+df_calories_needed_unique = df_calories_needed.groupby("username", as_index=False).agg({"caloriesneededresult": "mean"  })
+
+# Grupowanie spożytych kalorii (suma dla każdego użytkownika)
+df_calories_sum = df_calories_result_and_product_name.groupby("username", as_index=False).agg({"calories": "sum" })
+
+# Łączenie zredukowanych danych
+df_analysis2_fixed = pd.merge(df_calories_sum, df_calories_needed_unique, on="username", how="inner")
+
+# Tworzenie wykresu
 fig1 = px.bar(
-    df_analysis2, 
-    x="username", 
-    y=["calories", "caloriesneededresult"], 
-    title="Kalorie spożyte vs zapotrzebowanie"
+    df_analysis2_fixed,
+    x="username",
+    y=["calories", "caloriesneededresult"],
+    title="Kalorie spożyte vs zapotrzebowanie",
+    labels={"value": "Kalorie", "username": "Użytkownik"},
+    barmode="group"
 )
+
+fig1.update_layout(
+    xaxis_title="Użytkownik",
+    yaxis_title="Kalorie",
+    legend_title="Rodzaj danych"
+)
+
 fig1.show()
+
 
 # Wizualizacja 2: Najpopularniejsze produkty
 popular_products = df_analysis2.groupby("productname")["calories"].sum().nlargest(5).reset_index()
