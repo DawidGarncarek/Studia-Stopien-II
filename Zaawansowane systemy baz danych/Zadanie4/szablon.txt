@@ -92,24 +92,29 @@ print(grouped_bmi)
 # Analiza 2
 
 # Pobranie danych
-query_calories_needed = "SELECT newcaloriesdate, caloriesneededresult, username FROM usercaloriesneeded"
-query_calories_result = "SELECT newcaloriesdate, calories, productid, username FROM usercaloriesresult"
-query_food_products = "SELECT id, productname, calories_100g FROM foodproducts"
+query_calories_needed = """SELECT newcaloriesdate, caloriesneededresult, username FROM usercaloriesneeded"""
+query_calories_result_and_product_name = """SELECT r.newcaloriesdate, r.calories, r.productid, r.username, f.productname, f.calories_100g 
+FROM usercaloriesresult r JOIN foodproducts f ON r.productid = f.id"""
 
 df_calories_needed = pd.read_sql(query_calories_needed, connection)
-df_calories_result = pd.read_sql(query_calories_result, connection)
-df_food_products = pd.read_sql(query_food_products, connection)
+df_calories_result_and_product_name = pd.read_sql(query_calories_result_and_product_name, connection)
 
 # Tworzenie DataFrame
-df_analysis2 = pd.merge(df_calories_result, df_calories_needed, on="username", how="inner")
-df_analysis2 = pd.merge(df_analysis2, df_food_products, left_on="productid", right_on="id", how="inner")
+df_analysis2 = pd.merge(df_calories_result_and_product_name, df_calories_needed, on="username", how="inner")
 
 # Wizualizacja 1: Kalorie spożyte vs zapotrzebowanie
-px.bar(df_analysis2, x="username", y=["calories", "caloriesneededresult"], title="Kalorie spożyte vs zapotrzebowanie")
+fig1 = px.bar(
+    df_analysis2, 
+    x="username", 
+    y=["calories", "caloriesneededresult"], 
+    title="Kalorie spożyte vs zapotrzebowanie"
+)
+fig1.show()
 
 # Wizualizacja 2: Najpopularniejsze produkty
 popular_products = df_analysis2.groupby("productname")["calories"].sum().nlargest(5).reset_index()
-sns.barplot(data=popular_products, x="calories", y="productname")
+plt.figure(figsize=(10, 6))
+sns.barplot(data=popular_products, x="calories", y="productname", palette="viridis")
 plt.title("Top 5 najpopularniejszych produktów")
 plt.xlabel("Kalorie")
 plt.ylabel("Produkt")
@@ -117,8 +122,12 @@ plt.grid()
 plt.show()
 
 # Grupowanie
-grouped_analysis2 = df_analysis2.groupby("caloriesneededresult").agg({"calories": "sum", "caloriesneededresult": "mean"})
+grouped_analysis2 = df_analysis2.groupby("caloriesneededresult").agg({
+    "calories": "sum",
+    "caloriesneededresult": "mean"
+})
 print(grouped_analysis2)
+
 
 # Analiza 3
 
