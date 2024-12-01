@@ -1,0 +1,77 @@
+1. Cel Zadania i Wprowadzenie
+Co robi Twój kod?
+Twój kod optymalizuje komunikację z bazą danych, wykorzystując mechanizm pamięci podręcznej Redis, aby przechowywać wyniki często wykonywanych i czasochłonnych zapytań.
+Realizuje to przez tworzenie unikalnych kluczy Redis oraz zapisywanie wyników zapytań z bazy danych, co przyspiesza dostęp do danych w kolejnych zapytaniach.
+Dlaczego to jest ważne?
+Optymalizacja jest kluczowa w systemach o dużym obciążeniu, gdzie czas odpowiedzi ma krytyczne znaczenie.
+Przechowywanie wyników w Redis zmniejsza obciążenie bazy danych, co pozwala obsłużyć więcej zapytań w krótszym czasie.
+
+2. Wybrane zapytania SQL i ich optymalizacja
+Zapytania, które zoptymalizowałeś:
+Pobranie ostatniego wyniku BMI użytkownika
+Dlaczego? Jest to często używane zapytanie, np. w interfejsie aplikacji użytkownika (dashboard).
+Optymalizacja: Wynik zapytania jest przechowywany w Redis pod kluczem BMI:{username}:last_result. Dzięki temu kolejne zapytania o ten sam wynik są realizowane znacznie szybciej.
+
+Pobranie ćwiczeń użytkownika
+Dlaczego? Plany ćwiczeniowe są istotnym elementem aplikacji fitness. Mogą być często odczytywane w interfejsie użytkownika.
+Optymalizacja: Wynik zapytania jest przechowywany w Redis pod kluczem Exercises:{username}.
+
+Pobranie posiłków użytkownika na dany dzień
+Dlaczego? Zapytania dotyczące planu posiłków mogą być skomplikowane (np. zawierają JOIN z kilkoma tabelami) i wymagają więcej czasu na wykonanie.
+Optymalizacja: Wynik zapytania jest przechowywany w Redis pod kluczem Meals:{username}:day:{meal_day}.
+
+Jak działa optymalizacja?
+Dla każdego zapytania najpierw sprawdzamy, czy wynik jest dostępny w Redis.
+Jeśli tak, dane są zwracane natychmiast (cache hit).
+Jeśli nie, wykonujemy zapytanie SQL, a wynik zapisujemy w Redis na określony czas (cache miss).
+
+3. Unikalne klucze Redis i ich przeznaczenie
+Każde zapytanie używa unikalnego klucza Redis, który pozwala jednoznacznie identyfikować dane:
+
+BMI: Klucz BMI:{username}:last_result jednoznacznie identyfikuje wynik BMI dla konkretnego użytkownika.
+Ćwiczenia: Klucz Exercises:{username} identyfikuje plan ćwiczeń użytkownika.
+Posiłki: Klucz Meals:{username}:day:{meal_day} identyfikuje posiłki użytkownika na dany dzień.
+
+Dlaczego to działa?
+Klucze są unikalne i odzwierciedlają strukturę danych w aplikacji.
+
+Redis pozwala na szybkie odczytywanie i zapisywanie danych przy minimalnym opóźnieniu.
+4. Wydajność kodu i korzyści z Redis
+Przykład pomiaru czasu: Pokaż, jak korzystanie z Redis wpływa na czas wykonania zapytań. Możesz zmierzyć czas odpowiedzi przy pierwszym uruchomieniu funkcji (gdy dane są pobierane z bazy) i przy kolejnych (gdy dane są w Redis).
+
+import time
+
+# Przykład pomiaru czasu
+start_time = time.time()
+print(get_user_exercises("untus1@wp.pl"))  # Pierwsze uruchomienie (z bazy)
+print("Czas (pierwsze zapytanie):", time.time() - start_time)
+
+start_time = time.time()
+print(get_user_exercises("untus1@wp.pl"))  # Kolejne uruchomienie (z Redis)
+print("Czas (drugie zapytanie):", time.time() - start_time)
+Korzyści:
+
+Wyniki pokazują, że kolejne zapytania są szybsze, ponieważ Redis pozwala uniknąć czasochłonnego wykonywania zapytania SQL.
+
+5. Przykłady działania i wyniki
+Pokaż wyniki działania funkcji, np.:
+
+print(get_last_bmi("test@wp.pl"))
+# Wynik: {'ResultBMI': 24.8, 'CalculationDate': '2024-05-08T16:26:58.277000'}
+
+print(get_user_exercises("untus1@wp.pl"))
+# Wynik: [{'ExerciseName': 'Running', 'IntensityLevel': 'High', 'DurationMinutes': 30}, ...]
+
+print(get_user_meal_plan("testy@wp.pl", 1))
+# Wynik: [{'MealName': 'Pasta', 'Calories': 500, 'RecipeText': 'Cook pasta and add sauce'}, ...]
+
+6. Odpowiedź na wymagania zadania
+Przyspieszanie komunikacji: Dzięki Redis, dane są dostępne w pamięci podręcznej, co znacznie skraca czas odpowiedzi.
+Przechowywanie wyników zapytań w Redis: Każde zapytanie zapisuje wyniki w Redis z określonym czasem wygaśnięcia.
+Opracowanie kluczy: Klucze są logiczne i dobrze zaprojektowane, co ułatwia organizację i odczyt danych w Redis.
+
+7. Dalsze kroki i rozbudowa
+Na koniec możesz zaproponować potencjalne ulepszenia:
+Obsługa wygaśnięcia danych w Redis i automatyczna aktualizacja cache.
+Weryfikacja integralności danych między bazą a Redis.
+Optymalizacja bardziej złożonych zapytań SQL.
