@@ -1,0 +1,22 @@
+Requirement already satisfied: sqlalchemy in c:\users\d_gar\anaconda3\lib\site-packages (2.0.30)
+Requirement already satisfied: cx_Oracle in c:\users\d_gar\anaconda3\lib\site-packages (8.3.0)
+Requirement already satisfied: pandas in c:\users\d_gar\anaconda3\lib\site-packages (2.2.2)
+Requirement already satisfied: typing-extensions>=4.6.0 in c:\users\d_gar\anaconda3\lib\site-packages (from sqlalchemy) (4.11.0)
+Requirement already satisfied: greenlet!=0.4.17 in c:\users\d_gar\anaconda3\lib\site-packages (from sqlalchemy) (3.0.1)
+Requirement already satisfied: numpy>=1.26.0 in c:\users\d_gar\anaconda3\lib\site-packages (from pandas) (1.26.4)
+Requirement already satisfied: python-dateutil>=2.8.2 in c:\users\d_gar\anaconda3\lib\site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in c:\users\d_gar\anaconda3\lib\site-packages (from pandas) (2024.1)
+Requirement already satisfied: tzdata>=2022.7 in c:\users\d_gar\anaconda3\lib\site-packages (from pandas) (2023.3)
+Requirement already satisfied: six>=1.5 in c:\users\d_gar\anaconda3\lib\site-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)
+Requirement already satisfied: pandas in c:\users\d_gar\anaconda3\lib\site-packages (2.2.2)
+Requirement already satisfied: numpy>=1.26.0 in c:\users\d_gar\anaconda3\lib\site-packages (from pandas) (1.26.4)
+Requirement already satisfied: python-dateutil>=2.8.2 in c:\users\d_gar\anaconda3\lib\site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: pytz>=2020.1 in c:\users\d_gar\anaconda3\lib\site-packages (from pandas) (2024.1)
+Requirement already satisfied: tzdata>=2022.7 in c:\users\d_gar\anaconda3\lib\site-packages (from pandas) (2023.3)
+Requirement already satisfied: six>=1.5 in c:\users\d_gar\anaconda3\lib\site-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)
+ 
+{'ResultBMI': 24.8, 'CalculationDate': '2024-05-08T16:26:58.277000'}
+ 
+[{'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}, {'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}, {'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}, {'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}, {'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}, {'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}, {'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}, {'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}, {'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}, {'ExerciseName': 'Joga - Pozycja wojownika', 'IntensityLevel': 'Niska', 'DurationMinutes': 5}]
+ 
+[{'MealName': 'Pasta z tuńczykiem', 'Calories': 400, 'RecipeText': '1. Wymieszaj jogurt z granolą i warstwami świeżych owoców. 2. Na wierzch dodaj łyżkę miodu lub syropu klonowego.'}, {'MealName': 'Sałatka śródziemnomorska z grillowanym łososiem', 'Calories': 960, 'RecipeText': '1. Grilluj łososia z dodatkiem cytryny i ziół. 2. Przygotuj sałatkę ze świeżych warzyw śródziemnomorskich. 3. Połącz wszystko na talerzu.'}]
