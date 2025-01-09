@@ -1,0 +1,55 @@
+Zadania - przetwarzanie obrazów - OpenCV, PIL
+
+1. Wczytaj z dysku obrazek z użyciem OpenCV,
+
+• wyświetl obrazek z użyciem OpenCV,
+
+• wyświetl obrazek z użyciem matplotlib,
+
+• przekonwertuj obrazek z użyciem OpenCV i wyświetl ponownie z użyciem matplotlib.
+
+2. Wczytaj z dysku obrazek z użyciem PIL,
+
+• wyświetl obrazek z użyciem matplotlib,
+
+• wyświetl obrazek z użyciem OpenCV,
+
+• przekonwertuj obrazek z użyciem OpenCV i wyświetl ponownie z użyciem OpenCV.
+
+3. Z użyciem opencv uruchom kamerkę,
+
+• wyświetl obraz z kamery,
+
+• po naciśnięciu klawisza X zapisz obraz z kamery do pliku,
+
+• zamknij otwarte okienka,
+
+• zamknij połączenie z kamerą,
+
+• wyświetl zapisany obraz z użyciem matplotlib
+
+4. wczytaj z dysku obrazek z użyciem OpenCV (obrazek powinien przedstawiać zbliżenie na przynajmniej 2 twarze w okularach),
+
+• z użyciem metody Haar Cascades wykryj i policz na obrazku twarze w okularach,
+
+• wypisz liczbę wykrytych obiektów.
+
+5. z użyciem opencv uruchom kamerkę,
+
+• wyświetl obraz z kamery,
+
+• wyświetl obraz z kamery z zaznaczonymi wykrytymi twarzami (z użyciem metody Haar Cascades),
+
+• w trakcie działania programu wypisuj liczbę aktualnie wykrytych obiektów,
+
+• po naciśnięciu klawisza X zamknij otwarte okienka,
+
+• zamknij połączenie z kamerą,
+
+• zapisz do pliku obraz z wykrytymi obiektami.
+
+• W zadaniach warto skorzystać z bibliotek:
+
+■ https://docs.opencv.org/4.6.0/
+
+■ https://pillow.readthedocs.io/en/stable/handbook/index.html
