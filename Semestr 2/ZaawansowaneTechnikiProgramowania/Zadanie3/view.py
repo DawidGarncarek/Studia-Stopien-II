@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog, messagebox, ttk
+from tkinter import messagebox, ttk
 import os
 from PIL import Image, ImageTk
 
@@ -9,6 +9,12 @@ class ImageView:
     """
 
     def __init__(self, root, presenter):
+        """
+        Inicjalizuje interfejs użytkownika.
+
+        :param root: Główne okno aplikacji.
+        :param presenter: Obiekt klasy ImagePresenter zarządzający logiką aplikacji.
+        """
         self.presenter = presenter
         self.root = root
         self.root.title("Kompresja Obrazów (SVD)")
@@ -52,7 +58,11 @@ class ImageView:
         self.compress_button.config(command=self.presenter.compress_image)  
 
     def get_image_files(self):
-        """Zwraca listę dostępnych obrazów w folderze 'Obrazy'."""
+        """
+        Pobiera listę dostępnych obrazów w folderze 'Obrazy'.
+
+        :return: Lista nazw plików obrazów.
+        """
         if not os.path.exists(self.folder_path):
             os.makedirs(self.folder_path)  # Tworzymy folder, jeśli nie istnieje
         return [f for f in os.listdir(self.folder_path) if f.lower().endswith((".jpg", ".png", ".bmp"))]
@@ -71,7 +81,11 @@ class ImageView:
             self.show_error(str(e))
 
     def display_image(self, image_array):
-        """Wyświetla obraz w oknie aplikacji."""
+        """
+        Wyświetla obraz w oknie aplikacji.
+
+        :param image_array: Macierz NumPy reprezentująca obraz.
+        """
         img = Image.fromarray(image_array)
         img.thumbnail((500, 400))
         img = ImageTk.PhotoImage(img)
@@ -80,7 +94,11 @@ class ImageView:
         self.image_canvas.image = img  # Zatrzymujemy referencję do obrazu
 
     def get_rank(self):
-        """Pobiera wartość r od użytkownika."""
+        """
+        Pobiera wartość r od użytkownika.
+
+        :return: Liczba wartości osobliwych r lub None, jeśli podano niepoprawną wartość.
+        """
         try:
             r = int(self.rank_entry.get())
             if r <= 0:
@@ -91,5 +109,9 @@ class ImageView:
             return None
 
     def show_error(self, message):
-        """Wyświetla komunikat błędu."""
+        """
+        Wyświetla komunikat błędu.
+
+        :param message: Tekst komunikatu błędu.
+        """
         messagebox.showerror("Błąd", message)

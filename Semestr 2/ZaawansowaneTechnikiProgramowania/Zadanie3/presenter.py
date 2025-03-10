@@ -1,6 +1,4 @@
 from model import ImageCompressor
-import os
-from tkinter import filedialog
 
 class ImagePresenter:
     """
@@ -8,12 +6,21 @@ class ImagePresenter:
     """
 
     def __init__(self, view):
+        """
+        Inicjalizuje obiekt ImagePresenter.
+
+        :param view: Obiekt klasy ImageView.
+        """
         self.view = view
         self.image_array = None
         self.image_mode = None
 
     def load_image(self, filepath):
-        """Wczytuje obraz i wyświetla go w GUI."""
+        """
+        Wczytuje obraz i wyświetla go w GUI.
+
+        :param filepath: Ścieżka do pliku obrazu.
+        """
         if not filepath:
             self.view.show_error("Nie wybrano pliku.")
             return
