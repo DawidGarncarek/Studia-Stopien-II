@@ -1,6 +1,6 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
-import matplotlib.pyplot as plt
+from tkinter import filedialog, messagebox, ttk
+import os
 from PIL import Image, ImageTk
 
 class ImageView:
@@ -9,13 +9,26 @@ class ImageView:
     """
 
     def __init__(self, root, presenter):
-        self.presenter = presenter  # Może być None, ale to naprawimy w `main.py`
+        self.presenter = presenter
         self.root = root
         self.root.title("Kompresja Obrazów (SVD)")
         self.root.geometry("800x600")
 
-        # Przycisk do wczytania pliku (na razie nie podpinamy akcji, bo presenter może być None)
-        self.load_button = tk.Button(root, text="Wczytaj Obraz")
+        # Folder, w którym są obrazy
+        self.folder_path = os.path.join(os.getcwd(), "Obrazy")
+        self.image_files = self.get_image_files()
+
+        # Lista rozwijana do wyboru pliku
+        self.file_label = tk.Label(root, text="Wybierz plik:")
+        self.file_label.pack()
+
+        self.file_combobox = ttk.Combobox(root, values=self.image_files)
+        self.file_combobox.pack()
+        if self.image_files:
+            self.file_combobox.set(self.image_files[0])  # Domyślnie wybierz pierwszy plik
+
+        # Przycisk do wczytania obrazu
+        self.load_button = tk.Button(root, text="Wczytaj Obraz", command=self.load_selected_image)
         self.load_button.pack(pady=10)
 
         # Pole do wpisania wartości r
@@ -24,8 +37,8 @@ class ImageView:
         self.rank_entry = ttk.Entry(root)
         self.rank_entry.pack()
 
-        # Przycisk do kompresji (również na razie bez akcji)
-        self.compress_button = tk.Button(root, text="Kompresuj Obraz")
+        # Przycisk do kompresji
+        self.compress_button = tk.Button(root, text="Kompresuj Obraz", command=self.presenter.compress_image if self.presenter else None)
         self.compress_button.pack(pady=10)
 
         # Obszar na wyświetlanie obrazów
@@ -33,10 +46,29 @@ class ImageView:
         self.image_canvas.pack()
 
     def set_presenter(self, presenter):
-        """Ustawia prezentera i dopiero wtedy przypisuje funkcje do przycisków."""
+        """Ustawia prezentera i przypisuje funkcje do przycisków."""
         self.presenter = presenter
-        self.load_button.config(command=self.presenter.load_image)
-        self.compress_button.config(command=self.presenter.compress_image)
+        self.load_button.config(command=self.load_selected_image)  
+        self.compress_button.config(command=self.presenter.compress_image)  
+
+    def get_image_files(self):
+        """Zwraca listę dostępnych obrazów w folderze 'Obrazy'."""
+        if not os.path.exists(self.folder_path):
+            os.makedirs(self.folder_path)  # Tworzymy folder, jeśli nie istnieje
+        return [f for f in os.listdir(self.folder_path) if f.lower().endswith((".jpg", ".png", ".bmp"))]
+
+    def load_selected_image(self):
+        """Wczytuje obraz wybrany w comboboxie."""
+        if not self.presenter:
+            return
+
+        selected_file = self.file_combobox.get()
+        filepath = os.path.join(self.folder_path, selected_file)
+
+        try:
+            self.presenter.load_image(filepath)
+        except Exception as e:
+            self.show_error(str(e))
 
     def display_image(self, image_array):
         """Wyświetla obraz w oknie aplikacji."""
@@ -45,14 +77,17 @@ class ImageView:
         img = ImageTk.PhotoImage(img)
 
         self.image_canvas.create_image(250, 200, image=img)
-        self.image_canvas.image = img  
+        self.image_canvas.image = img  # Zatrzymujemy referencję do obrazu
 
     def get_rank(self):
         """Pobiera wartość r od użytkownika."""
         try:
-            return int(self.rank_entry.get())
+            r = int(self.rank_entry.get())
+            if r <= 0:
+                raise ValueError
+            return r
         except ValueError:
-            messagebox.showerror("Błąd", "Podaj poprawną liczbę całkowitą.")
+            self.show_error("Podaj poprawną liczbę całkowitą większą od 0.")
             return None
 
     def show_error(self, message):

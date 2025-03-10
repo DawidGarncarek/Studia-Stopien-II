@@ -2,7 +2,6 @@ from model import ImageCompressor
 import os
 from tkinter import filedialog
 
-
 class ImagePresenter:
     """
     Prezenter zarządzający logiką aplikacji i interakcją między widokiem a modelem.
@@ -13,19 +12,11 @@ class ImagePresenter:
         self.image_array = None
         self.image_mode = None
 
-    def load_image(self):
+    def load_image(self, filepath):
         """Wczytuje obraz i wyświetla go w GUI."""
-        folder_path = os.path.join(os.getcwd(), "Obrazy")
-
-        image_files = [f for f in os.listdir(folder_path) if f.endswith((".jpg", ".png", ".bmp"))]
-
-        if image_files:
-            filepath = os.path.join(folder_path, image_files[0])  
-        else:
-            filepath = filedialog.askopenfilename(filetypes=[("Obrazy", "*.jpg *.png *.bmp")])
-
         if not filepath:
-            return  
+            self.view.show_error("Nie wybrano pliku.")
+            return
 
         try:
             self.image_array, self.image_mode = ImageCompressor.load_image(filepath)
