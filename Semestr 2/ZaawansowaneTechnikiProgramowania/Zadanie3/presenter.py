@@ -1,9 +1,11 @@
 from model import ImageCompressor
-import numpy as np
+import os
+from tkinter import filedialog
+
 
 class ImagePresenter:
     """
-    Presenter connecting the View and Model for image compression.
+    Prezenter zarządzający logiką aplikacji i interakcją między widokiem a modelem.
     """
 
     def __init__(self, view):
@@ -12,10 +14,18 @@ class ImagePresenter:
         self.image_mode = None
 
     def load_image(self):
-        """Load an image and display it in the UI."""
-        filepath = filedialog.askopenfilename(filetypes=[("Images", "*.jpg *.png *.bmp")])
+        """Wczytuje obraz i wyświetla go w GUI."""
+        folder_path = os.path.join(os.getcwd(), "Obrazy")
+
+        image_files = [f for f in os.listdir(folder_path) if f.endswith((".jpg", ".png", ".bmp"))]
+
+        if image_files:
+            filepath = os.path.join(folder_path, image_files[0])  
+        else:
+            filepath = filedialog.askopenfilename(filetypes=[("Obrazy", "*.jpg *.png *.bmp")])
+
         if not filepath:
-            return
+            return  
 
         try:
             self.image_array, self.image_mode = ImageCompressor.load_image(filepath)
@@ -24,9 +34,9 @@ class ImagePresenter:
             self.view.show_error(str(e))
 
     def compress_image(self):
-        """Compress the image and update the UI."""
+        """Kompresuje obraz i wyświetla wynik."""
         if self.image_array is None:
-            self.view.show_error("No image loaded.")
+            self.view.show_error("Najpierw wczytaj obraz.")
             return
 
         r = self.view.get_rank()
@@ -34,9 +44,9 @@ class ImagePresenter:
             return
 
         try:
-            if self.image_mode == "L":  # Grayscale
+            if self.image_mode == "L":  # Skala szarości
                 compressed = ImageCompressor.compress_grayscale(self.image_array, r)
-            else:  # Color (RGB)
+            else:  # Kolor RGB
                 compressed = ImageCompressor.compress_color(self.image_array, r)
 
             self.view.display_image(compressed)

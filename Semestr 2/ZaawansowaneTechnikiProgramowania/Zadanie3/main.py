@@ -4,6 +4,7 @@ from presenter import ImagePresenter
 
 if __name__ == "__main__":
     root = tk.Tk()
-    presenter = ImagePresenter(ImageView(root, None))
-    presenter.view.presenter = presenter  # Circular reference
+    view = ImageView(root, None)  
+    presenter = ImagePresenter(view)
+    view.set_presenter(presenter)
     root.mainloop()
