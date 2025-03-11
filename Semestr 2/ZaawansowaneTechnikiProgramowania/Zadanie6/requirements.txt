@@ -1,0 +1,12 @@
+python -m venv venv
+venv\Scripts\activate
+pip install numpy
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+cargo new monte_carlo_rust --lib
+
+cargo clean
+cargo build --release
+
+
