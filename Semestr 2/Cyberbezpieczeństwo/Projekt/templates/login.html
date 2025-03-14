@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://www.ipko.pl/secure/ikd3/gfx/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <title>Strona logowania | iPKO - bankowość elektroniczna PKO Banku Polskiego</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style-login.css') }}">
+</head>
+<body>
+<div class="main-content">
+    <!-- Nagłówek -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <a href="#"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="iPKO Logo" class="logo"></a>              
+            </div>
+            <div class="lang-switch">
+                <img src="{{ url_for('static', filename='images/flaga.png') }}" alt="iPKO flaga" class="flag">
+                <span class="language">PL</span>
+                <img src="{{ url_for('static', filename='images/strzalka.png') }}" alt="iPKO strzalka" class="pointer">
+            </div>
+        </div>
+    </header>
+    
+    
+
+    <!-- Sekcja logowania -->
+    <main class="login-section">
+        <div class="login-box">
+            <div class="login-header">
+                <h2>Zaloguj się</h2>
+                <a href="#" class="no-account">Nie masz konta?</a>
+            </div>
+            <form action="{{ url_for('login') }}" method="post">
+            <input type="text" name="login" placeholder="Wpisz numer klienta lub login" required>           
+            <div class="login-footer">
+                <a href="#" class="help-link">Pomoc w logowaniu</a>
+                <button class="login-button" type="submit">Dalej</button>
+            </div>
+            </form>
+        </div>
+        <div class="auth-divider"></div>
+        <div class="promo-box">
+            <div class="promo-content">
+                <img src="{{ url_for('static', filename='images/obrazek.png') }}" alt="Promocja iPKO" class="promo-image">
+                <div class="promo-text">
+                    <h3>Dodatkowa gotówka na Twoje potrzeby. RRSO 11,57%</h3>
+                    <p>Weź swoją pierwszą pożyczkę u nas – na specjalnych warunkach</p>
+                    <button class="promo-button">Sprawdź propozycję</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Sekcja informacyjna -->
+    <section class="info-section">
+        <div class="info-item">
+            <p class="date">07.03.2025</p>
+            <h4>Samsung Neo QLED 4K nawet 1110 zł taniej!</h4>
+            <p class="text-color">Korzystaj z PKO Płacę później i odbierz kupon promocyjny do sklepu Samsung</p>
+            <a href="#">Więcej</a>
+        </div>
+        <div class="info-item red-text">
+            <p class="date">26.02.2025</p>
+            <h4>Kieszonkowcy? Możesz ich spotkać także online</h4>
+            <p class="text-color red-text">Sprawdź ofertę zanim z niej skorzystasz</p>
+            <a href="#">Więcej</a>
+        </div>
+        <div class="info-item">
+            <p class="date">05.11.2024</p>
+            <h4>Zastrzeżenie numeru PESEL</h4>
+            <p class="text-color">Najczęściej zadawane pytania.</p>
+            <a href="#">Więcej</a>
+        </div>
+    </section>
+</div>
+<div class="empty-space"></div>
+    <!-- Stopka -->
+    <div class="footer-block"></div>
+    <footer>
+        <div class="footer-container">
+            <p class="footer-copy">
+                <a href="#">© 2025 PKO Bank Polski</a>  
+                <a href="#">Kod BIC (Swift): BPKOPLPW </a> 
+                <a href="#">Polityka prywatności</a>
+            </p>
+            <div class="footer-links">
+                <a href="#"><span class="icon"><img src="{{ url_for('static', filename='images/b.png') }}"  class="footer-icon"></span> Bezpieczeństwo</a>
+                <a href="#"><span class="icon"><img src="{{ url_for('static', filename='images/p.png') }}"  class="footer-icon"></span> Pomoc</a>
+                <a href="#"><span class="icon"><img src="{{ url_for('static', filename='images/f.png') }}"  class="footer-icon"></span> Kontakt</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uwaga! Zostałeś oszukany!</title>
+    <style>
+        /* Migające tło */
+        @keyframes warning {
+            0% { background-color: red; }
+            50% { background-color: black; }
+            100% { background-color: yellow; }
+        }
+
+        body {
+            animation: warning 1s infinite alternate;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: black;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <h1>Zostałeś ofiarą phishingu!</h1>
+</body>
+</html>
