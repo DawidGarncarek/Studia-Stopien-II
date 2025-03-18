@@ -1,0 +1,5 @@
+﻿  WYK_PROJ.cpp
+C:\Users\BART\Desktop\STUDIA\Magister\Prog wsp\proj\WYK_PROJ\WYK_PROJ.cpp(258,43): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\BART\Desktop\STUDIA\Magister\Prog wsp\proj\WYK_PROJ\WYK_PROJ.cpp(267,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\BART\Desktop\STUDIA\Magister\Prog wsp\proj\WYK_PROJ\WYK_PROJ.cpp(275,51): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  WYK_PROJ.vcxproj -> C:\Users\BART\Desktop\STUDIA\Magister\Prog wsp\proj\WYK_PROJ\x64\Debug\WYK_PROJ.exe
