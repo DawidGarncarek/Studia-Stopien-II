@@ -153,6 +153,7 @@ input {
     min-height: 40px;
     padding: 3px 11px;
     color:rgb(164, 164, 164);
+    width:94%;
 }
 
 input:hover{

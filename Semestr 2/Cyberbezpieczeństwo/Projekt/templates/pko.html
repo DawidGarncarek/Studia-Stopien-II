@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PKO Bank Polski</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style-pko.css') }}">
+    </head>
+    <body>
+    
+        <!-- Nagłówek -->
+        <header class="header">
+            <div class="container">
+                <div class="logo">
+                    <img src="logo.png" alt="PKO Logo">
+                </div>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="#">Oferta</a></li>
+                        <li><a href="#">Bankowość elektroniczna</a></li>
+                        <li><a href="#">Pomoc i kontakt</a></li>
+                        <li><a href="#" class="promo">Promocje</a></li>
+                    </ul>
+                </nav>
+                <div class="header-right">
+                    <input type="text" placeholder="Wyszukaj">
+                    <button class="login-btn"><a href="{{ url_for('index') }}" class="login-button">Zaloguj się</a></button>
+                    <button class="register-btn">Otwórz konto</button>
+                </div>
+            </div>
+        </header>
+    
+        <!-- Pierwsza sekcja -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-text">
+                    <h1>Konto gotowe na Ciebie</h1>
+                    <p>Możesz zyskać nawet do 500 zł za udział w promocji</p>
+                    <button class="hero-btn">Sprawdź</button>
+                </div>
+                <div class="hero-image">
+                    <img src="promo.png" alt="PKO promocja">
+                </div>
+            </div>
+        </section>
+    
+    </body>
+    </html>
+    

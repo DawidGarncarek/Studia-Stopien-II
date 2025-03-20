@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uwaga! Zostałeś oszukany!</title>
     <style>
-        /* Migające tło */
         @keyframes warning {
             0% { background-color: red; }
             50% { background-color: black; }
@@ -18,24 +17,70 @@
             font-family: Arial, sans-serif;
             text-align: center;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
         }
 
         h1 {
             font-size: 50px;
             font-weight: bold;
             text-transform: uppercase;
-            background: black;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+            color: #ffcc00;
+        }
+
+        .info {
+            text-align: left;
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .info h2 {
+            color: #ffcc00;
+            text-align: center;
+        }
+
+        .info ul {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .info ul li {
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
+<div class="container">
     <h1>Zostałeś ofiarą phishingu!</h1>
+    <div class="info">
+        <h2>Co to jest phishing?</h2>
+        <p>
+            Phishing to oszustwo internetowe, w którym cyberprzestępcy podszywają się pod zaufane instytucje
+            (np. banki, firmy technologiczne), aby wyłudzić Twoje dane logowania, numery kart płatniczych
+            lub inne poufne informacje.
+        </p>
+
+        <h2>Jak się przed tym chronić?</h2>
+        <ul>
+            <li><b>Sprawdzaj adres strony:</b> Upewnij się, że adres URL jest poprawny i zaczyna się od "https://".</li>
+            <li><b>Nie klikaj w podejrzane linki:</b> Unikaj otwierania linków z nieznanych e-maili lub SMS-ów.</li>
+            <li><b>Używaj unikalnych haseł:</b> Nie stosuj tego samego hasła w różnych serwisach.</li>
+            <li><b>Włącz uwierzytelnianie dwuskładnikowe (2FA):</b> Zabezpiecz swoje konto dodatkowym kodem.</li>
+            <li><b>Nie podawaj danych osobowych przez telefon:</b> Banki i firmy nie proszą o dane logowania przez telefon lub e-mail.</li>
+        </ul>
+    </div>
+</div>
 </body>
 </html>
