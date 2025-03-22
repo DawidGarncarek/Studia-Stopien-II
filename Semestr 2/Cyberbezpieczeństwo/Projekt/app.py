@@ -6,7 +6,7 @@ app.secret_key = 'tajny_klucz'
 
 conn = pyodbc.connect(
     r'DRIVER={SQL Server};'
-    r'SERVER=LAPTOKDAWIDKA\SQLEXPRESS;'
+    r'SERVER=DAWIDEK\SQLEXPRESS;'
     r'DATABASE=phishing_db;'
     r'Trusted_Connection=yes;'
 )

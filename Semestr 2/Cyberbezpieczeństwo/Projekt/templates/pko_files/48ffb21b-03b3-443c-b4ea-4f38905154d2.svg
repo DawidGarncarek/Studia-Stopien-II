@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <g id="web_icon_contactless-payments-2_96" transform="translate(-1549 -843)">
+    <g id="ikona" transform="translate(1557 855.189)">
+      <path id="Path_16144" data-name="Path 16144" d="M25.948,18.819l-4,.12a10.666,10.666,0,0,0-7.28-7.96l.92-3.92A14.65,14.65,0,0,1,25.948,18.819Z" transform="translate(36.004 9.021)" fill="#003574"/>
+      <path id="Path_16145" data-name="Path 16145" d="M32.778,24.569l-4.04.08a18.7,18.7,0,0,0-13.6-15.68l.92-3.88A22.674,22.674,0,0,1,32.778,24.569Z" transform="translate(37.414 3.111)" fill="#003574"/>
+      <path id="Path_16146" data-name="Path 16146" d="M39.7,30.519l-4.04.12A26.907,26.907,0,0,0,15.618,7l.92-3.96A31.186,31.186,0,0,1,39.7,30.519Z" transform="translate(38.854 -3.039)" fill="#003574"/>
+      <path id="Path_16147" data-name="Path 16147" d="M49.992,48.992H10.008A8.009,8.009,0,0,1,2,40.984V17a8.006,8.006,0,0,1,8.008-8.008H49.992A8.006,8.006,0,0,1,58,17V40.984A8.009,8.009,0,0,1,49.992,48.992ZM6,17V40.988a4,4,0,0,0,4,4H50a4,4,0,0,0,4-4V17a4,4,0,0,0-4-4H10A4,4,0,0,0,6,17Z" transform="translate(-2 14.82)" fill="#003574"/>
+      <path id="Path_16148" data-name="Path 16148" d="M4,15.992c0-2.212,1.432-4,3.2-4H20v4Z" transform="translate(4 23.82)" fill="#003574"/>
+      <path id="Path_16149" data-name="Path 16149" d="M4.052,18.992a3.884,3.884,0,0,1,3.756-4H35.844v4Z" transform="translate(4.156 32.82)" fill="#003574"/>
+    </g>
+    <rect id="pole" width="96" height="96" transform="translate(1549 843)" fill="none" opacity="0"/>
+  </g>
+</svg>
