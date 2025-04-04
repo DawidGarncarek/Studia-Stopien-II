@@ -1,0 +1,7 @@
+cqlsh 192.168.56.101
+sudo nano /etc/netplan/00-installer-config.yaml
+/opt/cassandra/bin/cassandra -f
+/opt/cassandra/bin/nodetool status
+sudo nano /opt/cassandra/conf/cassandra-rackdc.properties
+pkill -f cassandra
+ps aux|grep cassandra
