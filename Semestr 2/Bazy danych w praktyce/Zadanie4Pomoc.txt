@@ -1,0 +1,2 @@
+Po odpaleniu dockera na ubuntu1
+Wpisz ten adres ip do przegladarki: http://192.168.56.101:7474
