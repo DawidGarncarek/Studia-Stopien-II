@@ -1,0 +1,10 @@
+Po odpaleniu kazdego dockera
+Wpisać to: docker 
+exec -it mongo1 mongo 
+Potem to do sprawdzenia: 
+use filmdb 
+db.movies.countDocuments() 
+db.movies.findOne()
+Jesli nie działa to na secondary wpisać to:
+rs.secondaryOk()
+Skrypt pythona działa tylko na ubuntu1
