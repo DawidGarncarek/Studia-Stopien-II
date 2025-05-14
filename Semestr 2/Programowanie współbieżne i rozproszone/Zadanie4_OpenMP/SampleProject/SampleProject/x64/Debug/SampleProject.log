@@ -1,0 +1,4 @@
+﻿  SampleProject.cpp
+C:\Users\d_gar\Desktop\Dokumenty\StudiaStopieńII\Semestr2\Programowanie współbieżne\Zadanie4_OpenMP\SampleProject\SampleProject.cpp(99,19): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+C:\Users\d_gar\Desktop\Dokumenty\StudiaStopieńII\Semestr2\Programowanie współbieżne\Zadanie4_OpenMP\SampleProject\SampleProject.cpp(87,10): warning C4101: "mode": lokalna zmienna, do której nie istnieje odwołanie
+  SampleProject.vcxproj -> C:\Users\d_gar\Desktop\Dokumenty\StudiaStopieńII\Semestr2\Programowanie współbieżne\Zadanie4_OpenMP\SampleProject\x64\Debug\SampleProject.exe
