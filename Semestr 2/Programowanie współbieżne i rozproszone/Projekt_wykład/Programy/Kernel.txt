@@ -1,0 +1,172 @@
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <cuda_runtime.h>
+#include <cstring>
+
+// -------------------- CUDA KERNELS --------------------
+
+// Bubble Sort Kernel
+__global__ void bubbleSortKernel(int* arr, int n) {
+    int tid = threadIdx.x + blockIdx.x * blockDim.x;
+    for (int i = 0; i < n; i++) {
+        int j = tid;
+        while (j < n - i - 1) {
+            if (arr[j] > arr[j + 1]) {
+                int tmp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = tmp;
+            }
+            j += blockDim.x * gridDim.x;
+        }
+        __syncthreads();
+    }
+}
+
+// Selection Sort Kernel (Single-threaded)
+__global__ void selectionSortKernel(int* arr, int n) {
+    if (threadIdx.x == 0 && blockIdx.x == 0) {
+        for (int i = 0; i < n - 1; i++) {
+            int min_idx = i;
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[min_idx]) {
+                    min_idx = j;
+                }
+            }
+            int tmp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = tmp;
+        }
+    }
+}
+
+// Insertion Sort Kernel (Single-threaded)
+__global__ void insertionSortKernel(int* arr, int n) {
+    if (threadIdx.x == 0 && blockIdx.x == 0) {
+        for (int i = 1; i < n; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+    }
+}
+
+// Merge helper function
+__device__ void merge(int* arr, int* temp, int left, int mid, int right) {
+    int i = left, j = mid + 1, k = left;
+    while (i <= mid && j <= right)
+        temp[k++] = (arr[i] <= arr[j]) ? arr[i++] : arr[j++];
+    while (i <= mid) temp[k++] = arr[i++];
+    while (j <= right) temp[k++] = arr[j++];
+    for (i = left; i <= right; i++) arr[i] = temp[i];
+}
+
+// Merge Sort Kernel
+__global__ void mergeSortKernel(int* arr, int* temp, int n) {
+    int tid = threadIdx.x + blockIdx.x * blockDim.x;
+    for (int width = 1; width < n; width *= 2) {
+        for (int i = tid * 2 * width; i < n; i += blockDim.x * gridDim.x * 2 * width) {
+            int left = i;
+            int mid = min(i + width - 1, n - 1);
+            int right = min(i + 2 * width - 1, n - 1);
+            if (mid < right) merge(arr, temp, left, mid, right);
+        }
+        __syncthreads();
+    }
+}
+
+// Quick Sort helper
+__device__ void quickSort(int* arr, int left, int right) {
+    if (left < right) {
+        int pivot = arr[right];
+        int i = left - 1;
+        for (int j = left; j < right; j++) {
+            if (arr[j] < pivot) {
+                ++i;
+                int tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+            }
+        }
+        int tmp = arr[i + 1]; arr[i + 1] = arr[right]; arr[right] = tmp;
+        quickSort(arr, left, i);
+        quickSort(arr, i + 2, right);
+    }
+}
+
+// Quick Sort Kernel
+__global__ void quickSortKernel(int* arr, int n) {
+    if (threadIdx.x == 0 && blockIdx.x == 0) {
+        quickSort(arr, 0, n - 1);
+    }
+}
+
+// -------------------- MAIN --------------------
+int main() {
+    int N, blocks, threads;
+    std::cout << "Podaj rozmiar tablicy: ";
+    std::cin >> N;
+    std::cout << "Podaj liczbe blokow: ";
+    std::cin >> blocks;
+    std::cout << "Podaj liczbe watkow na blok: ";
+    std::cin >> threads;
+
+    int* h_arr = new int[N];
+    srand(time(0));
+    for (int i = 0; i < N; ++i) h_arr[i] = rand() % 100000;
+
+    auto run_sort = [&](const char* name, void(*kernel)(int*, int)) {
+        int* d_arr;
+        cudaMalloc(&d_arr, N * sizeof(int));
+        cudaMemcpy(d_arr, h_arr, N * sizeof(int), cudaMemcpyHostToDevice);
+
+        cudaEvent_t start, stop;
+        cudaEventCreate(&start);
+        cudaEventCreate(&stop);
+        cudaEventRecord(start);
+        kernel << <blocks, threads >> > (d_arr, N);
+        cudaDeviceSynchronize();
+        cudaEventRecord(stop);
+        cudaEventSynchronize(stop);
+
+        float milliseconds;
+        cudaEventElapsedTime(&milliseconds, start, stop);
+        std::cout << name << ": " << milliseconds / 1000.0 << " s\n";
+
+        cudaFree(d_arr);
+        cudaEventDestroy(start);
+        cudaEventDestroy(stop);
+        };
+
+    //run_sort("Bubble Sort", bubbleSortKernel);
+    run_sort("Selection Sort", selectionSortKernel);
+    run_sort("Insertion Sort", insertionSortKernel);
+    //run_sort("Quick Sort", quickSortKernel);
+
+    // Merge sort special case (needs 2 arrays)
+    int* d_arr, * d_tmp;
+    cudaMalloc(&d_arr, N * sizeof(int));
+    cudaMalloc(&d_tmp, N * sizeof(int));
+    cudaMemcpy(d_arr, h_arr, N * sizeof(int), cudaMemcpyHostToDevice);
+    cudaEvent_t start, stop;
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+    cudaEventRecord(start);
+    mergeSortKernel << <blocks, threads >> > (d_arr, d_tmp, N);
+    cudaDeviceSynchronize();
+    cudaEventRecord(stop);
+    cudaEventSynchronize(stop);
+    float milliseconds;
+    cudaEventElapsedTime(&milliseconds, start, stop);
+    //std::cout << "Merge Sort: " << milliseconds / 1000.0 << " s\n";
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
+    cudaFree(d_arr);
+    cudaFree(d_tmp);
+
+    delete[] h_arr;
+    return 0;
+}
