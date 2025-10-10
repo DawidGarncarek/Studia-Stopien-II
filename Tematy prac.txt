@@ -1,0 +1,12 @@
+Analiza wpływu mechanizmów bezpieczeństwa na wydajność zapytań SQL w różnych systemach baz danych
+Praca obejmuje porównanie wydajności zapytań w różnych DBMS (np. SQLite, ORACLE, MSSQL) przy aktywnych mechanizmach bezpieczeństwa – takich jak szyfrowanie danych, kontrola dostępu, czy maskowanie kolumn.
+Celem jest ocena, jak zastosowanie różnych polityk bezpieczeństwa wpływa na wydajność systemu.
+
+Porównanie wydajności zapytań SQL w relacyjnych bazach danych w kontekście dużych zbiorów danych (Big Data) 
+albo ogólnie ze względu na strukturę baz danych np. relacyjne, obiektowe, rozproszone, strumieniowe, grafowe, Nierelacyjne bazy danych (NoSQL)
+Badanie wydajności zapytań SQL dla dużych wolumenów danych (np. 10M–100M rekordów) w różnych DBMS (MySQL, PostgreSQL, MSSQL).
+Analiza mechanizmów przetwarzania dużych zbiorów, partycjonowania i równoległego wykonywania zapytań.
+
+Analiza i optymalizacja wydajności zapytań SQL w systemie Microsoft SQL Server
+Praca skupia się na jednym DBMS – MSSQL – i analizuje wpływ struktury danych, indeksów, parametrów serwera i planów wykonania na wydajność zapytań.
+Dodatkowo możesz zaprezentować użycie narzędzi typu SQL Profiler, Query Store, Database Engine Tuning Advisor.
